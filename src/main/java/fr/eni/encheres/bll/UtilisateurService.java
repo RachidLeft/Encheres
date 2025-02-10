@@ -10,7 +10,7 @@ public interface UtilisateurService {
 
     Utilisateur findById(int id);
 
-    List<Utilisateur> findAll
+    List<Utilisateur> findAll;
 
     void deleteById(int id);
 
