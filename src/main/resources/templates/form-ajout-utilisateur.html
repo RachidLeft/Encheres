@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajout Utilisateur</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+<!--<div th:insert="~{fragments/navbar :: navbar}"></div>-->
+<div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-8">
+    <h1 class="text-3xl font-bold mb-6 text-blue-600">Ajout Utilisateur</h1>
+
+    <form th:action="@{/utilisateurs/ajout}" method="post" th:object="${utilisateur}" class="space-y-4">
+        <div class="flex flex-col">
+            <label for="pseudo" class="text-lg font-semibold mb-2">Pseudo :</label>
+            <input type="text" th:field="*{pseudo}" id="pseudo" class="border rounded-lg p-2">
+            <div th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}" class="text-red-600"></div>
+        </div>
+        <div class="flex flex-col">
+            <label for="nom" class="text-lg font-semibold mb-2">Nom :</label>
+            <input type="text" th:field="*{nom}" id="nom" class="border rounded-lg p-2">
+            <div th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="text-red-600"></div>
+        </div>
+        <div class="flex flex-col">
+            <label for="prenom" class="text-lg font-semibold mb-2">Prénom :</label>
+            <input type="text" th:field="*{prenom}" id="prenom" class="border rounded-lg p-2">
+            <div th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" class="text-red-600"></div>
+        </div>
+        <div class="flex flex-col">
+            <label for="email" class="text-lg font-semibold mb-2">Email :</label>
+            <input type="text" th:field="*{email}" id="email" class="border rounded-lg p-2">
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-red-600"></div>
+        </div>
+        <div class="flex flex-col">
+            <label for="telephone" class="text-lg font-semibold mb-2">Téléphone :</label>
+            <input type="text" th:field="*{telephone}" id="telephone" class="border rounded-lg p-2">
+            <div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="text-red-600"></div>
+        </div>
+        <div class="flex flex-col">
+            <label for="rue" class="text-lg font-semibold mb-2">Rue :</label>
+            <input type="text" th:field="*{rue}" id="rue" class="border rounded-lg p-2">
+            <div th:if="${#fields.hasErrors('rue')}" th:errors="*{rue}" class="text-red-600"></div>
+        </div>
+        <div class="flex flex-col">
+            <label for="codePostal" class="text-lg font-semibold mb-2">Code Postal :</label>
+            <input type="number" th:field="*{codePostal}" id="codePostal" class="border rounded-lg p-2">
+            <div th:if="${#fields.hasErrors('codePostal')}" th:errors="*{codePostal}" class="text-red-600"></div>
+        </div>
+        <div class="flex flex-col">
+            <label for="ville" class="text-lg font-semibold mb-2">Ville :</label>
+            <input type="text" th:field="*{ville}" id="ville" class="border rounded-lg p-2">
+            <div th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}" class="text-red-600"></div>
+        </div>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Valider</button>
+    </form>
+</div>
+</body>
+</html>
