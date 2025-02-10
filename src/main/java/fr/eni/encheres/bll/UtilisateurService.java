@@ -2,6 +2,8 @@ package fr.eni.encheres.bll;
 
 import fr.eni.encheres.bo.Utilisateur;
 
+import java.util.List;
+
 public interface UtilisateurService {
 
     void ajouter(Utilisateur utilisateur);
@@ -10,7 +12,7 @@ public interface UtilisateurService {
 
     Utilisateur findById(int id);
 
-    List<Utilisateur> findAll
+    List<Utilisateur> findAll = null;
 
     void deleteById(int id);
 
