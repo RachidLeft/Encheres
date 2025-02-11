@@ -29,7 +29,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests((authorize) -> authorize
 				.requestMatchers("/*").permitAll()
 				.requestMatchers("/login").permitAll()
-				.anyRequest().denyAll()//interdit l'accès aux urls non configurées
+				.requestMatchers("/utilisateurs/ajout").permitAll()
 			)
 			.httpBasic(Customizer.withDefaults())
 			.formLogin((formLogin) ->
@@ -49,13 +49,31 @@ public class SecurityConfig {
 	}
 	
 	
-	@Bean
+	//@Bean
 	//Permet de chercher les utilisateurs en base de donnée
 	UserDetailsManager users(DataSource dataSource) {
 		
 		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-		jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT pseudo, mot_de_passe, 'true' AS enabled FROM UTILISATEURS WHERE pseudo = ? OR email = ?");
+		jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT email, pseudo, mot_de_passe, 'true' AS enabled FROM UTILISATEURS WHERE pseudo = ? OR email = ?");
 		
 		return jdbcUserDetailsManager;
+	}
+	
+	@Bean
+	public UserDetailsService userDetailsService() {
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		String passwordChiffre = passwordEncoder.encode("Pa$$w0rd");
+		
+		UserDetails userDetails = User.builder()
+			.username("user")
+			.password(passwordChiffre)
+			.build();
+		
+		UserDetails stephane = User.builder()
+				.username("sgobin@campus-eni.fr")
+				.password(passwordChiffre)
+				.build();
+
+		return new InMemoryUserDetailsManager(userDetails, stephane);
 	}
 }

@@ -2,6 +2,7 @@ package fr.eni.encheres.dal;
 
 import fr.eni.encheres.bo.Utilisateur;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -12,7 +13,8 @@ import java.util.Optional;
 public class UtilisateurRepositoryImpl implements UtilisateurRepository {
     private JdbcTemplate jdbcTemplate;
     public UtilisateurRepositoryImpl(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
-
+    
+    private static final String FIND_BY_PSEUDO = "select no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, credit, administrateur from utilisateurs where pseudo = :pseudo";
 
     @Override
     public void ajouter(Utilisateur utilisateur) {
@@ -39,7 +41,16 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
 
     }
 
-    class RowMapper implements RowMapper<Utilisateur> {
+
+	@Override
+	public Utilisateur read(String pseudo) {
+		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+		mapSqlParameterSource.addValue("pseudo", pseudo);
+		
+		return jdbcTemplate.queryForObject(FIND_BY_PSEUDO, mapSqlParameterSource,);
+	}
+
+    /*class RowMapper implements RowMapper<Utilisateur> {
         @Override
         public Utilisateur mapRow(ResultSet rs, int rowNum) throws SQLException {
             Utilisateur utilisateur = new Utilisateur();
@@ -49,7 +60,7 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
             utilisateur.setUserRole(rs.getString("userRole"));
             return utilisateur;
         }
-    }
+    }*/
 }
 
 
