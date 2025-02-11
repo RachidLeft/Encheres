@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div class="login-container">
+
+
+        <form th:action="@{/login}" method="POST">
+        <p th:if="${param.error}">L'email ou le mot de passe saisie sont invalide</p>
+        
+            <label for="username">Identifiant :</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" required>
+
+            <div class="options">
+                <button type="submit">Connexion</button>
+                <label>
+                    <input type="checkbox" name="remember-me"> Se souvenir de moi
+                </label>
+            </div>
+
+            <div class="links">
+                <a href="">Mot de passe oublié</a>
+            </div>
+        </form>
+
+        <div class="register">
+            <a th:href="@{/register}" class="btn-register">Créer un compte</a>
+        </div>
+    </div>
+</body>
+</html>
