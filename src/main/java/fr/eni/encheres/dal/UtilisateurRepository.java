@@ -17,5 +17,7 @@ public interface UtilisateurRepository {
     public void update(Utilisateur utilisateur);
 
     public void deleteById(int id);
+    
+    Utilisateur read(String pseudo);
 
 }

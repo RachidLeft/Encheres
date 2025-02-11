@@ -2,8 +2,12 @@ package fr.eni.encheres.dal;
 
 import fr.eni.encheres.bo.Utilisateur;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -13,6 +17,7 @@ import java.util.Optional;
 
 @Repository
 public class UtilisateurRepositoryImpl implements UtilisateurRepository {
+
     
     private final JdbcTemplate jdbcTemplate;
     private final PasswordEncoder passwordEncoder;  // Injection du PasswordEncoder
@@ -21,6 +26,10 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
         this.jdbcTemplate = jdbcTemplate;
         this.passwordEncoder = passwordEncoder;
     }
+
+    
+    private static final String FIND_BY_PSEUDO = "select no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, credit, administrateur from utilisateurs where pseudo = ?";
+
 
     @Override
     public void ajouter(Utilisateur utilisateur) {
@@ -80,8 +89,16 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
         jdbcTemplate.update(sql, id);
     }
 
+    @Override
+	public Utilisateur read(String pseudo) {
+		
+		return jdbcTemplate.queryForObject(FIND_BY_PSEUDO, new UtilisateurRowMapper(), pseudo);
+	}
+
     // Classe interne pour mapper les résultats SQL vers l'objet Utilisateur
-    private static class UtilisateurRowMapper implements RowMapper<Utilisateur> {
+    private class UtilisateurRowMapper implements RowMapper<Utilisateur> {
+
+
         @Override
         public Utilisateur mapRow(ResultSet rs, int rowNum) throws SQLException {
             Utilisateur utilisateur = new Utilisateur();

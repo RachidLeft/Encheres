@@ -48,6 +48,7 @@ public class SecurityConfig {
 		return http.build();
 	}
 	
+
 	@Bean
 	// Permet de chercher les utilisateurs en base de données
 	public UserDetailsManager users(DataSource dataSource) {
@@ -63,5 +64,8 @@ public class SecurityConfig {
 	// Ajout du PasswordEncoder pour pouvoir encoder/décoder les mots de passe
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+
+	
+
 	}
 }
