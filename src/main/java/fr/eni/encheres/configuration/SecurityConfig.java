@@ -35,8 +35,8 @@ public class SecurityConfig {
 			.httpBasic(Customizer.withDefaults())
 			.formLogin((formLogin) ->
 				formLogin
-					.loginPage("/login")
-					.defaultSuccessUrl("/")
+					.loginPage("/login").permitAll()
+					.defaultSuccessUrl("/").permitAll()
 			)
 			.logout((logout) ->
 				logout
@@ -54,7 +54,7 @@ public class SecurityConfig {
 	public UserDetailsManager users(DataSource dataSource) {
 		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 		jdbcUserDetailsManager.setUsersByUsernameQuery(
-		    "SELECT pseudo, mot_de_passe, 'true' AS enabled FROM UTILISATEURS WHERE pseudo = ? OR email = ?"
+		    "SELECT pseudo, mot_de_passe, 'true' AS enabled FROM UTILISATEURS WHERE pseudo = ?"		
 		);
 		
 		return jdbcUserDetailsManager;
