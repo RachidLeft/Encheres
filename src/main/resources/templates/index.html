@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Liste des enchères</title>
+</head>
+<body>
+<header th:replace="~{fragments/fragment-entete :: entete}">
+</header>
+
+
+<main>
+<h1>Liste des enchères</h1>
+
+	<form action="">
+		<ul>
+			<li>
+				<label for="idFiltre">Filtres</label>
+				<input id="idFiltre" type="text" placeholder="Le nom de l'article contient"/>
+			</li>
+			<li>
+				<label for="idCategorie">Catégories</label>
+				<select id="idCategorie" >
+					<option value="id"></option>
+				</select>
+			</li>
+			<li>
+				<button type="submit">Rechercher</button>
+			</li>
+		</ul>
+	</form>
+	<form action="">
+		<ul>
+			<li>
+				<label for="idNomArticle"></label>
+				<input id="idNomArticle" type="text" value=""/>
+			</li>
+			<li>
+				<label for="idPrix">Prix :</label>
+				<input id="idPrix" type="text" value=""/>
+			</li>
+			<li>
+				<label for="idFinEnchere">Fin de l'enchère :</label>
+				<input id="idFinEnchere" type="date" value=""/>
+			</li>
+			<li>
+				<label for="idVendeur">Vendeur :</label>
+				<input id="idVendeur" type="text" value=""/>
+			</li>
+		</ul>
+	</form>
+</main>
+</body>
+</html>
