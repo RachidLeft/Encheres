@@ -1,5 +1,5 @@
 package fr.eni.encheres.bo;
-
+import jakarta.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +17,47 @@ public class Utilisateur {
 	private String motDePasse;
 	private int credit;
 	private boolean administrateur;
+
+
+	@Size(min = 2, max = 50, message = "Le nom doit faire entre 2 et 50 caractères")
+	@NotBlank(message = "Le nom est obligatoire")
+	private String nom;
+
+	@Size(min = 2, max = 50, message = "Le prénom doit faire entre 2 et 50 caractères")
+	@NotBlank(message = "Le prénom est obligatoire")
+	private String prenom;
+
+	@Email(message = "L'adresse email est invalide")
+	@NotBlank(message = "L'adresse email est obligatoire")
+	private String email;
+
+	@Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Le numéro de téléphone est invalide")
+	@NotBlank(message = "Le numéro de téléphone est obligatoire")
+	private String telephone;
+
+	@Size(min = 2, max = 100, message = "La rue doit faire entre 2 et 100 caractères")
+	@NotBlank(message = "La rue est obligatoire")
+	private String rue;
+
+	@Min(value = 10000, message = "Ceci n'est pas un Code Postal valide")
+	@Size(min = 5, max = 5, message = "Le code postal doit être un nombre à 5 chiffres")
+	@NotNull(message = "Le code postal est obligatoire")
+	private String codePostal;
+
+	@Size(min = 2, max = 50, message = "La ville doit faire entre 2 et 50 caractères")
+	@NotBlank(message = "La ville est obligatoire")
+	private String ville;
+
+
+	private String motDePasse;
+
+
+	private int credit;
+
+
+	private boolean administrateur;
+
+
 	
 	private List<ArticleVendu> articlesVendus = new ArrayList<ArticleVendu>();
 	private List<ArticleVendu> articlesAchetes = new ArrayList<ArticleVendu>();
@@ -156,4 +197,5 @@ public class Utilisateur {
 	public void setArticlesAchetes(List<ArticleVendu> articlesAchetes) {
 		this.articlesAchetes = articlesAchetes;
 	}
+
 }
