@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -29,7 +29,8 @@ public class SecurityConfig {
 			.authorizeHttpRequests((authorize) -> authorize
 				.requestMatchers("/*").permitAll()
 				.requestMatchers("/login").permitAll()
-				.anyRequest().denyAll()//interdit l'accès aux urls non configurées
+				.requestMatchers("/utilisateurs/ajout").permitAll()
+				//.anyRequest().denyAll() // Interdit l'accès aux URLs non configurées
 			)
 			.httpBasic(Customizer.withDefaults())
 			.formLogin((formLogin) ->
@@ -43,19 +44,24 @@ public class SecurityConfig {
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
 					.logoutSuccessUrl("/")
 			);	
-			
 
 		return http.build();
 	}
 	
-	
 	@Bean
-	//Permet de chercher les utilisateurs en base de donnée
-	UserDetailsManager users(DataSource dataSource) {
-		
+	// Permet de chercher les utilisateurs en base de données
+	public UserDetailsManager users(DataSource dataSource) {
 		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-		jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT pseudo, mot_de_passe, 'true' AS enabled FROM UTILISATEURS WHERE pseudo = ? OR email = ?");
+		jdbcUserDetailsManager.setUsersByUsernameQuery(
+		    "SELECT pseudo, mot_de_passe, 'true' AS enabled FROM UTILISATEURS WHERE pseudo = ? OR email = ?"
+		);
 		
 		return jdbcUserDetailsManager;
+	}
+
+	@Bean
+	// Ajout du PasswordEncoder pour pouvoir encoder/décoder les mots de passe
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 }

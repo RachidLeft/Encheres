@@ -39,7 +39,7 @@ public class UtilisateurController {
         }
         utilisateurService.ajouter(utilisateur);
         System.out.println(utilisateur);
-        return "redirect:/utlisateurs";
+        return "redirect:/";
     }
 
 }

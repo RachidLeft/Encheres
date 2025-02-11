@@ -51,6 +51,11 @@
             <input type="text" th:field="*{ville}" id="ville" class="border rounded-lg p-2">
             <div th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}" class="text-red-600"></div>
         </div>
+         <div class="flex flex-col">
+            <label for="motDePasse" class="text-lg font-semibold mb-2">Mot de passe :</label>
+            <input type="text" th:field="*{motDePasse}" id="motDePasse" class="border rounded-lg p-2">
+            <div th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}" class="text-red-600"></div>
+        </div>
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Valider</button>
     </form>
 </div>
