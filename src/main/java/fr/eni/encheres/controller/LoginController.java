@@ -56,9 +56,9 @@ public class LoginController {
 			utilisateurSession.setCodePostal(null);
 			utilisateurSession.setVille(null);
 			utilisateurSession.setAdministrateur(false);
-
+			
 		}
-
+		System.out.println(utilisateurSession);
 		return "redirect:/encheres";
 
 	}
