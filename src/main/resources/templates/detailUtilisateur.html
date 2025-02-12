@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails Utilisateur</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+
+<div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-8">
+    <h1 class="text-3xl font-bold mb-6 text-blue-600">Détails de l'utilisateur</h1>
+    <div class="space-y-4">
+    <p><span class="font-semibold">Pseudo :</span> <span th:text="${utilisateur.pseudo}"></span></p>
+        <p><span class="font-semibold">Nom :</span> <span th:text="${utilisateur.nom}"></span></p>
+        <p><span class="font-semibold">Prénom :</span> <span th:text="${utilisateur.prenom}"></span></p>
+        <p><span class="font-semibold">Téléphone :</span> <span th:text="${utilisateur.telephone}"></span></p>
+        <p><span class="font-semibold">Email :</span> <span th:text="${utilisateur.email}"></span></p>
+        <p><span class="font-semibold">Rue :</span> <span th:text="${utilisateur.rue}"></span></p>
+        <p><span class="font-semibold">Code Postal :</span> <span th:text="${utilisateur.codePostal}"></span></p>
+        <p><span class="font-semibold">Ville :</span> <span th:text="${utilisateur.ville}"></span></p>
+    </div>
+    <form th:action="@{/utilisateurs/delete/{id}(id=${utilisateur.noUtilisateur})}" method="get" class="inline-block mt-6">
+        <input type="hidden" name="_method" value="delete"/>
+        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            Supprimer l'utilisateur
+        </button>
+    </form>
+    <a th:href="@{/utilisateurs/modif/{id}(id=${utilisateur.noUtilisateur})}" class="inline-block mt-6 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        Modifier l'utilisateur
+    </a>
+</div>
+</body>
+</html>

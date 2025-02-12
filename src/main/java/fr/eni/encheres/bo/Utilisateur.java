@@ -7,7 +7,7 @@ public class Utilisateur {
 	// Attributs
 	private int noUtilisateur;
 	private String pseudo;
-	
+
 	@Size(min = 2, max = 50, message = "Le nom doit faire entre 2 et 50 caractères")
 	@NotBlank(message = "Le nom est obligatoire")
 	private String nom;

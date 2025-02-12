@@ -2,15 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Ajout Utilisateur</title>
+    <title>Modifier Utilisateur</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 p-6">
 <!--<div th:insert="~{fragments/navbar :: navbar}"></div>-->
 <div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-8">
-    <h1 class="text-3xl font-bold mb-6 text-blue-600">Ajout Utilisateur</h1>
+    <h1 class="text-3xl font-bold mb-6 text-blue-600">Modifier Utilisateur</h1>
 
-    <form th:action="@{/utilisateurs/ajout}" method="post" th:object="${utilisateur}" class="space-y-4">
+    <form th:action="@{/utilisateurs/modif/{id}(id=${utilisateur.noUtilisateur})}" method="post" th:object="${utilisateur}" class="space-y-4">
         <div class="flex flex-col">
             <label for="pseudo" class="text-lg font-semibold mb-2">Pseudo :</label>
             <input type="text" th:field="*{pseudo}" id="pseudo" class="border rounded-lg p-2">
@@ -51,15 +51,6 @@
             <input type="text" th:field="*{ville}" id="ville" class="border rounded-lg p-2">
             <div th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}" class="text-red-600"></div>
         </div>
-         <div class="flex flex-col">
-            <label for="motDePasse" class="text-lg font-semibold mb-2">Mot de passe :</label>
-            <input type="password" th:field="*{motDePasse}" id="motDePasse" class="border rounded-lg p-2">
-            <div th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}" class="text-red-600"></div>
-        </div>
-           <div class="flex flex-col">
-        <label for="confirmMotDePasse" class="text-lg font-semibold mb-2">Confirmer le mot de passe :</label>
-        <input type="password" name="confirmMotDePasse" id="confirmMotDePasse" class="border rounded-lg p-2">
-    </div>
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Valider</button>
     </form>
 </div>

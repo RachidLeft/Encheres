@@ -9,13 +9,14 @@
 
 
         <form th:action="@{/login}" method="POST">
+        
         <p th:if="${param.error}">L'email ou le mot de passe saisie sont invalide</p>
         
             <label for="username">Identifiant :</label>
-            <input type="text" id="username" name="username" required>
+            <input type="text"  id="idpseudo" name="pseudo" required>
 
             <label for="password">Mot de passe :</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="idPassword"  name="mot_de_passe" required>
 
             <div class="options">
                 <button type="submit">Connexion</button>
@@ -30,7 +31,7 @@
         </form>
 
         <div class="register">
-            <a th:href="@{/register}" class="btn-register">Créer un compte</a>
+            <a th:href="@{/utilisateurs/ajout}" class="btn-register">Créer un compte</a>
         </div>
     </div>
 </body>
