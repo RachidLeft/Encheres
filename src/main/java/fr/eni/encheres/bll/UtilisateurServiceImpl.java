@@ -4,6 +4,9 @@ package fr.eni.encheres.bll;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.UtilisateurRepository;
 
+import java.util.Optional;
+
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,21 +20,24 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public void ajouter(Utilisateur utilisateur) {
+    	String passwordBcrypt = PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(utilisateur.getMotDePasse());
+    	utilisateur.setMotDePasse(passwordBcrypt);
     	utilisateurRepository.ajouter(utilisateur);
     }
 
     @Override
     public void update(Utilisateur utilisateur) {
+    	utilisateurRepository.update(utilisateur);
 
     }
 
     @Override
     public Utilisateur findById(int id) {
-        return null;
+        return utilisateurRepository.findById(id);
     }
 
     @Override
     public void deleteById(int id) {
-
+    	utilisateurRepository.deleteById(id);
     }
 }
