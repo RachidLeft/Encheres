@@ -1,31 +1,48 @@
 package fr.eni.encheres.bo;
 
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class ArticleVendu {
 	
+	
 	private int noArticle;
+	@NotBlank
+	@Size(max = 30)
 	private String nomArticle;
+	@Size(max = 300)
 	private String description;
-	private LocalDate dateDebutEncheres;
-	private LocalDate dateFinEncheres;
+	@NotNull
+	private LocalDateTime dateDebutEncheres;
+	@NotNull
+	private LocalDateTime dateFinEncheres;
+	@Min(value = 1)
 	private int miseAPrix;
+	@Min(value = 1)
     private int prixVente;
     private String etatVente;
     
+    @NotNull
     private Categorie categorie;
     private Utilisateur vend;
     private Utilisateur achete;
     private Retrait lieuRetrait;
+    private List<Enchere> enchere;
     
     //CONSTRUCTEURS
     public ArticleVendu() {
 		
 	}
     
-	public ArticleVendu(int noArticle, String nomArticle, String description, LocalDate dateDebutEncheres,
-			LocalDate dateFinEncheres, int miseAPrix, int prixVente, String etatVente, Categorie categorie,
-			Utilisateur vend, Utilisateur achete, Retrait lieuRetrait) {
+	public ArticleVendu(int noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres,
+			LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, String etatVente, Categorie categorie,
+			Utilisateur vend, Utilisateur achete, Retrait lieuRetrait, List<Enchere> enchere) {
 		super();
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
@@ -39,6 +56,7 @@ public class ArticleVendu {
 		this.vend = vend;
 		this.achete = achete;
 		this.lieuRetrait = lieuRetrait;
+		this.enchere = enchere;
 	}
 	
 
@@ -74,22 +92,22 @@ public class ArticleVendu {
 	}
 
 
-	public LocalDate getDateDebutEncheres() {
+	public LocalDateTime getDateDebutEncheres() {
 		return dateDebutEncheres;
 	}
 
 
-	public void setDateDebutEncheres(LocalDate dateDebutEncheres) {
+	public void setDateDebutEncheres(LocalDateTime dateDebutEncheres) {
 		this.dateDebutEncheres = dateDebutEncheres;
 	}
 
 
-	public LocalDate getDateFinEncheres() {
+	public LocalDateTime getDateFinEncheres() {
 		return dateFinEncheres;
 	}
 
 
-	public void setDateFinEncheres(LocalDate dateFinEncheres) {
+	public void setDateFinEncheres(LocalDateTime dateFinEncheres) {
 		this.dateFinEncheres = dateFinEncheres;
 	}
 
@@ -161,6 +179,23 @@ public class ArticleVendu {
 
 	public void setLieuRetrait(Retrait lieuRetrait) {
 		this.lieuRetrait = lieuRetrait;
+	}
+
+	public List<Enchere> getEnchere() {
+		return enchere;
+	}
+
+	public void setEnchere(List<Enchere> enchere) {
+		this.enchere = enchere;
+	}
+
+	@Override
+	public String toString() {
+		return "ArticleVendu [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
+				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", miseAPrix="
+				+ miseAPrix + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", categorie=" + categorie
+				+ ", vend=" + vend + ", achete=" + achete + ", lieuRetrait=" + lieuRetrait + ", enchere=" + enchere
+				+ "]";
 	}
 	
 	

@@ -39,7 +39,7 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
 
     }
 
-    class RowMapper implements RowMapper<Utilisateur> {
+    /*class RowMapper implements RowMapper<Utilisateur> {
         @Override
         public Utilisateur mapRow(ResultSet rs, int rowNum) throws SQLException {
             Utilisateur utilisateur = new Utilisateur();
@@ -49,7 +49,7 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
             utilisateur.setUserRole(rs.getString("userRole"));
             return utilisateur;
         }
-    }
+    }*/
 }
 
 

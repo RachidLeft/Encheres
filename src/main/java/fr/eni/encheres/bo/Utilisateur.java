@@ -4,21 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Utilisateur {
-	//Attributs
+	// Attributs
 	private int noUtilisateur;
 	private String pseudo;
-	private String nom;
-	private String prenom;
-	private String email;
-	private String telephone;
-	private String rue;
-	private String codePostal;
-	private String ville;
-	private String motDePasse;
-	private int credit;
-	private boolean administrateur;
-
-
+	
 	@Size(min = 2, max = 50, message = "Le nom doit faire entre 2 et 50 caractères")
 	@NotBlank(message = "Le nom est obligatoire")
 	private String nom;
