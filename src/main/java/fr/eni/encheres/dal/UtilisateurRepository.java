@@ -12,7 +12,7 @@ public interface UtilisateurRepository {
 
     public List<Utilisateur> findAll();
 
-    public Optional<Utilisateur> findById(int id);
+    public Utilisateur findById(int id);
 
     public void update(Utilisateur utilisateur);
 

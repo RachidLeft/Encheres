@@ -29,6 +29,9 @@ public class SecurityConfig {
 			.authorizeHttpRequests((authorize) -> authorize
 				.requestMatchers("/*").permitAll()
 				.requestMatchers("/login").permitAll()
+				.requestMatchers("/utilisateurs/modif/{id}").permitAll()
+				.requestMatchers("/utilisateurs/detail/{id}").permitAll()
+				.requestMatchers("/utilisateurs/delete/{id}").permitAll()
 				.requestMatchers("/utilisateurs/ajout").permitAll()
 				//.anyRequest().denyAll() // Interdit l'accès aux URLs non configurées
 			)

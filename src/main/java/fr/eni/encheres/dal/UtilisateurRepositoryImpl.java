@@ -1,6 +1,7 @@
 package fr.eni.encheres.dal;
 
 import fr.eni.encheres.bo.Utilisateur;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,11 +16,11 @@ import java.util.Optional;
 public class UtilisateurRepositoryImpl implements UtilisateurRepository {
     
     private final JdbcTemplate jdbcTemplate;
-    private final PasswordEncoder passwordEncoder;  // Injection du PasswordEncoder
 
-    public UtilisateurRepositoryImpl(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
+
+    public UtilisateurRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.passwordEncoder = passwordEncoder;
+
     }
 
     @Override
@@ -36,7 +37,7 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
             utilisateur.getRue(), 
             utilisateur.getCodePostal(), 
             utilisateur.getVille(), 
-            passwordEncoder.encode(utilisateur.getMotDePasse()) // Encodage du mot de passe
+            utilisateur.getMotDePasse()
         );
     }
 
@@ -47,17 +48,18 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
     }
 
     @Override
-    public Optional<Utilisateur> findById(int id) {
-        String sql = "SELECT * FROM UTILISATEURS WHERE id_client = ?";
-        List<Utilisateur> utilisateurs = jdbcTemplate.query(sql, new UtilisateurRowMapper(), id);
-        return utilisateurs.isEmpty() ? Optional.empty() : Optional.of(utilisateurs.get(0));
+   public Utilisateur findById(int id) {
+    	String sql = "SELECT * FROM UTILISATEURS WHERE no_utilisateur = ?";
+    	Utilisateur utilisateur = jdbcTemplate.queryForObject(sql,new UtilisateurRowMapper(),id);
+        
+        return utilisateur;
     }
 
     @Override
     public void update(Utilisateur utilisateur) {
-        String sql = "UPDATE UTILISATEURS SET pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, code_postal = ?, ville = ?, mot_de_passe = ?, credit = ?, administrateur = ? " +
-                     "WHERE id_client = ?";
-
+        String sql = "UPDATE UTILISATEURS SET pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, code_postal = ?, ville = ?,credit = ?, administrateur = ? " +
+                     "WHERE no_utilisateur = ?";
+System.out.println("je suis la");
         jdbcTemplate.update(sql,
             utilisateur.getPseudo(),
             utilisateur.getNom(),
@@ -67,7 +69,6 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
             utilisateur.getRue(),
             utilisateur.getCodePostal(),
             utilisateur.getVille(),
-            passwordEncoder.encode(utilisateur.getMotDePasse()), // Encodage du mot de passe
             utilisateur.getCredit(),
             utilisateur.isAdministrateur(),
             utilisateur.getNoUtilisateur()
@@ -76,12 +77,12 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
 
     @Override
     public void deleteById(int id) {
-        String sql = "DELETE FROM UTILISATEURS WHERE id_client = ?";
+        String sql = "DELETE FROM UTILISATEURS WHERE no_utilisateur = ?";
         jdbcTemplate.update(sql, id);
     }
 
     // Classe interne pour mapper les résultats SQL vers l'objet Utilisateur
-    private static class UtilisateurRowMapper implements RowMapper<Utilisateur> {
+    class UtilisateurRowMapper implements RowMapper<Utilisateur> {
         @Override
         public Utilisateur mapRow(ResultSet rs, int rowNum) throws SQLException {
             Utilisateur utilisateur = new Utilisateur();
