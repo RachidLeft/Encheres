@@ -83,7 +83,13 @@ ALTER TABLE ENCHERES
         ON DELETE NO ACTION
         ON UPDATE NO ACTION;
  
-	
+CREATE TABLE ROLES (
+    role VARCHAR(30) NOT NULL,
+    is_admin BIT NOT NULL
+);
+INSERT INTO ROLES (role, is_admin) VALUES ('ROLE_USER', 0);
+INSERT INTO ROLES (role, is_admin) VALUES ('ROLE_ADMIN', 1);
+INSERT INTO ROLES (role, is_admin) VALUES ('ROLE_USER', 1);	
  
  
  

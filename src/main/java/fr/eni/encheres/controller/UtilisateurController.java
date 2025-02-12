@@ -3,10 +3,8 @@ package fr.eni.encheres.controller;
 
 import fr.eni.encheres.bll.UtilisateurService;
 import fr.eni.encheres.bo.Utilisateur;
-
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/utilisateurs")
@@ -37,14 +37,23 @@ public class UtilisateurController {
     }
 
     @PostMapping("/ajout")
-    public String ajouterUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, BindingResult resultat) {
-        if(resultat.hasErrors()) {
-            return "form-ajout-utilisateur";
+    public String ajouterUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, 
+                                     @RequestParam("confirmMotDePasse") String confirmMotDePasse, 
+                                     BindingResult resultat) {
+        if (!utilisateur.getMotDePasse().equals(confirmMotDePasse)) {
+
+            resultat.rejectValue("motDePasse", "error.motDePasse", "Les mots de passe ne correspondent pas.");
+            return "form-ajout-utilisateur"; 
         }
-        utilisateurService.ajouter(utilisateur);
-        System.out.println(utilisateur);
+        if (resultat.hasErrors()) {
+            return "form-ajout-utilisateur"; 
+        }
+        utilisateurService.ajouter(utilisateur); 
         return "redirect:/";
     }
+
+
+
 
     @GetMapping("/detail/{id}")
     public String  detailUtilisateur(@PathVariable("id")int id, Model model){
