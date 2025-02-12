@@ -34,7 +34,7 @@ public class CategorieDAOImpl implements CategorieDAO{
 	}
 
 	@Override
-	public List<Categorie> finAll() {
+	public List<Categorie> findAll() {
 		return namedParameterJdbcTemplate.query(SELECT_ALL, new CategorieRowMapper());
 		
 	}

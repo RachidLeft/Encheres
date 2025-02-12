@@ -8,5 +8,5 @@ public interface CategorieDAO {
 	
 	Categorie read(int idCategorie);  
 
-	List<Categorie> finAll(); 
+	List<Categorie> findAll(); 
 }
