@@ -62,9 +62,4 @@ public class SecurityConfig {
 		return jdbcUserDetailsManager;
 	}
 
-	@Bean
-	// Ajout du PasswordEncoder pour pouvoir encoder/décoder les mots de passe
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 }
