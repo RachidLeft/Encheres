@@ -20,8 +20,9 @@
 			</li>
 			<li>
 				<label for="idCategorie">Catégories</label>
-				<select id="idCategorie" >
-					<option value="id"></option>
+				<select name="categorie" id="idCategorie" >
+					<option value="0">Toutes</option>
+					<option th:each "c : ${categories} th:text="${c.libelle}" th:value="${c.noCategorie}"></option>
 				</select>
 			</li>
 			<li>

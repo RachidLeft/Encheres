@@ -117,4 +117,9 @@ ON DELETE NO ACTION
 INSERT INTO ROLES (role, is_admin) VALUES ('ROLE_USER', 0);
 INSERT INTO ROLES (role, is_admin) VALUES ('ROLE_ADMIN', 1);
 INSERT INTO ROLES (role, is_admin) VALUES ('ROLE_USER', 1);
+
+INSERT INTO CATEGORIES (libelle) VALUES ('Informatique');
+INSERT INTO CATEGORIES (libelle) VALUES ('Ameublement');
+INSERT INTO CATEGORIES (libelle) VALUES ('Vêtement');
+INSERT INTO CATEGORIES (libelle) VALUES ('Sport&Loisirs');
  

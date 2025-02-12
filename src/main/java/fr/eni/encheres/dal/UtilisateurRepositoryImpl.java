@@ -76,7 +76,7 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
             utilisateur.getRue(),
             utilisateur.getCodePostal(),
             utilisateur.getVille(),
-            passwordEncoder.encode(utilisateur.getMotDePasse()), // Encodage du mot de passe
+            utilisateur.getMotDePasse(),
             utilisateur.getCredit(),
             utilisateur.isAdministrateur(),
             utilisateur.getNoUtilisateur()
