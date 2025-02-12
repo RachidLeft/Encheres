@@ -22,53 +22,51 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-			.authorizeHttpRequests((authorize) -> authorize
-				.requestMatchers("/*").permitAll()
-				.requestMatchers("/login").permitAll()
-				.requestMatchers("/utilisateurs/modif/{id}").permitAll()
-				.requestMatchers("/utilisateurs/detail/{id}").permitAll()
-				.requestMatchers("/utilisateurs/delete/{id}").permitAll()
-				.requestMatchers("/utilisateurs/ajout").permitAll()
-				//.anyRequest().denyAll() // Interdit l'accès aux URLs non configurées
-			)
-			.httpBasic(Customizer.withDefaults())
-			.formLogin((formLogin) ->
-				formLogin
-					.loginPage("/login")
-					.defaultSuccessUrl("/")
-			)
-			.logout((logout) ->
-				logout
-					.invalidateHttpSession(true)
-					.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-					.logoutSuccessUrl("/")
-			);	
 
-		return http.build();
-	}
 	
 
-	@Bean
-	// Permet de chercher les utilisateurs en base de données
-	public UserDetailsManager users(DataSource dataSource) {
-		JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-		jdbcUserDetailsManager.setUsersByUsernameQuery(
-		    "SELECT pseudo, mot_de_passe, 'true' AS enabled FROM UTILISATEURS WHERE pseudo = ? OR email = ?"
-		);
-		
-		return jdbcUserDetailsManager;
-	}
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    		http.authorizeHttpRequests(authentification -> {
+    			authentification
+    			.requestMatchers("/login", "/css/**").permitAll()
+    			.anyRequest().permitAll();
+    		});
+    		http.formLogin(form -> {
+    			form.usernameParameter("pseudo")
+    			.passwordParameter("mot_de_passe");
+    			form.loginPage("/login").permitAll()
+    			.failureUrl("/login?error=true")
+    			.defaultSuccessUrl("/").permitAll();			
+    		});
+    		
+    	
+    		http.logout(logout -> 
+    			logout
+    			.invalidateHttpSession(true)
+    			.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+    			.logoutSuccessUrl("/"));
 
-	@Bean
+
+    		return http.build();
+    }
+
+    @Bean
+    public UserDetailsManager users(DataSource dataSource) {
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+        jdbcUserDetailsManager.setUsersByUsernameQuery(
+            "SELECT pseudo, mot_de_passe, 'true' as enable from UTILISATEURS where pseudo=?"
+        );
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+        	"SELECT U.pseudo, R.role FROM UTILISATEURS U INNER JOIN ROLES R ON R.IS_ADMIN = U.administrateur WHERE U.pseudo = ?"
+        );
+        return jdbcUserDetailsManager;
+    }
+
+ 	@Bean
 	// Ajout du PasswordEncoder pour pouvoir encoder/décoder les mots de passe
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-
-	
 
 	}
 }

@@ -6,6 +6,8 @@ import java.time.LocalDate;
 public class Enchere {
 	//Attributs
 	private LocalDate dateEnchere;
+	
+	
 	private int montantEnchere;
 
 	private Utilisateur encherisseur;
