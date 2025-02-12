@@ -20,7 +20,7 @@ public class EncheresController {
 		this.enchereService = enchereService;
 	}
 
-	@GetMapping("/encheres")
+	@GetMapping("/")
 	public String afficherEncheres(Model model) { 
 		
 		List<Categorie> categories = enchereService.finAll();

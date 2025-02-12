@@ -1,9 +1,8 @@
 package fr.eni.encheres.dal;
 
-import fr.eni.encheres.bo.Utilisateur;
-
 import java.util.List;
-import java.util.Optional;
+
+import fr.eni.encheres.bo.Utilisateur;
 
 public interface UtilisateurRepository {
 

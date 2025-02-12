@@ -19,10 +19,10 @@
 				<input id="idFiltre" type="text" placeholder="Le nom de l'article contient"/>
 			</li>
 			<li>
-				<label for="idCategorie">Catégories</label>
-				<select name="categorie" id="idCategorie" >
+				<label for="categorie">Catégories</label>
+				<select name="categorie" id="categorie" >
 					<option value="0">Toutes</option>
-					<option th:each "c : ${categories} th:text="${c.libelle}" th:value="${c.noCategorie}"></option>
+					<option th:each="c : ${categories}" th:text="${c.libelle}" th:value="${c.noCategorie}"></option>
 				</select>
 			</li>
 			<li>
