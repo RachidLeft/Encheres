@@ -29,7 +29,7 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
     }
 
     
-    private static final String FIND_BY_PSEUDO = "select no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville, credit, administrateur from utilisateurs where pseudo = ?";
+    private static final String FIND_BY_PSEUDO = "select no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville,mot_de_passe, credit, administrateur from utilisateurs where pseudo = ?";
 
 
     @Override

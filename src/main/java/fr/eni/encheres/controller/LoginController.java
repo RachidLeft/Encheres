@@ -31,7 +31,7 @@ public class LoginController {
 	public String connexion(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurSession, Principal principal) {
 
 		Utilisateur utilisateur = this.contexteService.charger(principal.getName());
-
+System.out.println("aaaaaaaaaaaaaaaaaaa"+utilisateur);
 		if (utilisateur != null) {
 			utilisateurSession.setNoUtilisateur(utilisateur.getNoUtilisateur());
 			utilisateurSession.setPseudo(utilisateur.getPseudo());
@@ -58,8 +58,8 @@ public class LoginController {
 			utilisateurSession.setAdministrateur(false);
 			
 		}
-		System.out.println(utilisateurSession);
-		return "redirect:/encheres";
+		System.out.println("tessssssssssssss"+utilisateurSession);
+		return "redirect:/";
 
 	}
 	
