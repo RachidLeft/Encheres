@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS ENCHERES;
 DROP TABLE IF EXISTS ARTICLES_VENDUS;
 DROP TABLE IF EXISTS UTILISATEURS;
 DROP TABLE IF EXISTS CATEGORIES;
+DROP TABLE IF EXISTS ROLES;
  
 CREATE TABLE CATEGORIES (
     no_categorie   INTEGER IDENTITY(1,1) NOT NULL,
@@ -56,8 +57,8 @@ CREATE TABLE ARTICLES_VENDUS (
     no_article                    INTEGER IDENTITY(1,1) NOT NULL,
     nom_article                   VARCHAR(30) NOT NULL,
     description                   VARCHAR(300) NOT NULL,
-	date_debut_encheres           DATE NOT NULL,
-    date_fin_encheres             DATE NOT NULL,
+	date_debut_encheres           DATETIME2 NOT NULL,
+    date_fin_encheres             DATETIME2 NOT NULL,
     prix_initial                  INTEGER,
     prix_vente                    INTEGER,
     no_utilisateur                INTEGER NOT NULL,
@@ -108,4 +109,12 @@ ON DELETE NO ACTION
   ALTER TABLE ARTICLES_VENDUS    ADD CONSTRAINT chk_dates_encheres CHECK (date_debut_encheres < date_fin_encheres);
   
   ALTER TABLE ENCHERES    ADD CONSTRAINT chk_montant_enchere CHECK (montant_enchere > 0);
+  
+  CREATE TABLE ROLES (
+    role VARCHAR(30) NOT NULL,
+    is_admin BIT NOT NULL 
+);
+INSERT INTO ROLES (role, is_admin) VALUES ('ROLE_USER', 0);
+INSERT INTO ROLES (role, is_admin) VALUES ('ROLE_ADMIN', 1);
+INSERT INTO ROLES (role, is_admin) VALUES ('ROLE_USER', 1);
  

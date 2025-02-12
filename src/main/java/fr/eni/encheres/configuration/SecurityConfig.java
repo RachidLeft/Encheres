@@ -23,6 +23,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
+	
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     		http.authorizeHttpRequests(authentification -> {
@@ -61,10 +63,4 @@ public class SecurityConfig {
         return jdbcUserDetailsManager;
     }
 
- 	@Bean
-	// Ajout du PasswordEncoder pour pouvoir encoder/décoder les mots de passe
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-
-	}
 }
