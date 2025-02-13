@@ -27,14 +27,14 @@ public class CategorieDAOImpl implements CategorieDAO{
 
 	
 	@Override
-	public Categorie read(int noCategorie) {
+	public Categorie read(int idCategorie) {
 		 MapSqlParameterSource namedParameters = new MapSqlParameterSource(); 
-		    namedParameters.addValue("idCategorie", noCategorie); 
+		    namedParameters.addValue("idCategorie", idCategorie); 
 		    return namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID, namedParameters, new BeanPropertyRowMapper<>(Categorie.class));
 	}
 
 	@Override
-	public List<Categorie> finAll() {
+	public List<Categorie> findAll() {
 		return namedParameterJdbcTemplate.query(SELECT_ALL, new CategorieRowMapper());
 		
 	}

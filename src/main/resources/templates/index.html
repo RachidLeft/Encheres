@@ -19,9 +19,10 @@
 				<input id="nom_article" type="text" placeholder="Le nom de l'article contient"/>
 			</li>
 			<li>
-				<label for="no_categorie">Catégories</label>
-				<select id="no_categorie" >
-					<option value="id"></option>
+				<label for="categorie">Catégories</label>
+				<select name="categorie" id="categorie" >
+					<option value="0">Toutes</option>
+					<option th:each="c : ${categories}" th:text="${c.libelle}" th:value="${c.noCategorie}"></option>
 				</select>
 			</li>
 			<li>

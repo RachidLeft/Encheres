@@ -1,20 +1,14 @@
 package fr.eni.encheres.dal;
 
-import fr.eni.encheres.bo.Utilisateur;
-
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-
-import org.springframework.stereotype.Repository;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+import fr.eni.encheres.bo.Utilisateur;
 
 @Repository
 public class UtilisateurRepositoryImpl implements UtilisateurRepository {
@@ -78,6 +72,7 @@ System.out.println("je suis la");
             utilisateur.getRue(),
             utilisateur.getCodePostal(),
             utilisateur.getVille(),
+            utilisateur.getMotDePasse(),
             utilisateur.getCredit(),
             utilisateur.isAdministrateur(),
             utilisateur.getNoUtilisateur()
