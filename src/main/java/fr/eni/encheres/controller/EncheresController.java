@@ -17,10 +17,6 @@ public class EncheresController {
 		this.enchereService = enchereService;
 	}
 	
-	@GetMapping("/")
-	public String redirectToIndex() {
-		return "redirect:/login";
-	}
 	
 	@GetMapping("/encheres")
 	public String afficherEncheres() {
