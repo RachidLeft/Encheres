@@ -11,9 +11,11 @@ public interface ArticleVenduDAO {
 	
 	List<ArticleVendu> findAll();
 		
-	List<ArticleVendu> findArticleById(int noArticle);
+	List<ArticleVendu> findArticleById(int noCategorie);
 	
-	List<ArticleVendu> findArticleByCategorie(String nomArticle);
+	List<ArticleVendu> findArticleByName(String nomArticle);
+ 
+	List<ArticleVendu> findArticleByIdAndCategorie(int noCategorie, String nomArticle);
 	
 
 }

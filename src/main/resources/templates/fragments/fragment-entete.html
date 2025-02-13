@@ -20,9 +20,9 @@
                     <li sec:authorize="isAuthenticated()" class="inline-block">
                         <a th:href="@{/vendre_article}" class="hover:underline">Vendre un article</a>
                     </li>
-                 <!-- <li sec:authorize="isAuthenticated()" class="inline-block">
+                 	<li sec:authorize="isAuthenticated()" class="inline-block">
                         <a th:href="@{/utilisateurs/detail/{id}(id=${utilisateurEnSession.noUtilisateur})}" class="hover:underline">Mon profil</a>
-                    </li> -->  
+                    </li>
                     <li sec:authorize="isAuthenticated()" class="inline-block">
                         <a th:href="@{/logout}" class="hover:underline">Déconnexion</a>
                     </li>
@@ -31,7 +31,7 @@
                 <!-- Section utilisateur connecté -->
                 <div class="flex flex-col items-end">
                     <div class="text-right">
-                        <p th:text="'Connecté : ' + ${utilisateurEnSession}" class="mt-2"></p>
+                        <p th:text="'Connecté : ' + ${utilisateurEnSession.pseudo}" class="mt-2"></p>
                     </div>
                 </div>
             </div>

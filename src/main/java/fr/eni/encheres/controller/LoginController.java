@@ -60,14 +60,13 @@ System.out.println("aaaaaaaaaaaaaaaaaaa"+utilisateur);
 			
 		}
 		System.out.println("tessssssssssssss"+utilisateurSession);
-		return "index";
+		return "redirect:/encheres";
 
 	}
 	
 	
 	@ModelAttribute("utilisateurEnSession")
 	 public Utilisateur addMembreEnSession() {
-	  System.out.println("Add membre en session");
 	  return new Utilisateur();
 	 }
 
