@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.bo.Categorie;
-import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
 
 @Repository
@@ -23,12 +22,18 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	
 	private final String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, no_utilisateur, no_categorie)"
 			+ "VALUES (:nom_article, :description, :date_debut_encheres, :date_fin_encheres, :prix_initial, :no_utilisateur, :no_categorie)";
-	private final String FIND_ALL = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, no_utilisateur, no_categorie FROM ARTICLES_VENDUS";
-	private final String FIND_ARTICLE_BY_ID = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, no_utilisateur, no_categorie FROM ARTICLES_VENDUS"
-			+ "WHERE no_article = :no_article";
-	private final String FIND_ARTICLE_BY_CATEGORIE = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, no_utilisateur, no_categorie FROM ARTICLES_VENDUS"
-			+ "WHERE no_categorie = :no_categorie";
+	private final String FIND_ALL = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
+			+ "JOIN UTILISATEUR AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIE AS c ON av.no_categorie = c.no_categorie";
+	private final String FIND_ARTICLE_BY_CATEGORIE = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
+			+ "JOIN UTILISATEUR AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIE AS c ON av.no_categorie = c.no_categorie WHERE no_categorie = :no_categorie";
+	private final String FIND_ARTICLE_BY_NAME = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
+			+ "JOIN UTILISATEUR AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIE AS c ON av.no_categorie = c.no_categorie WHERE nom_article = :nom_article";
+	private final String FIND_ARTICLE_BY_NAME_AND_CATEGORIE = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
+			+ "JOIN UTILISATEUR AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIE AS c ON av.no_categorie = c.no_categorie WHERE nom_article = :nom_article AND no_categorie = :no_categorie";
 
+	
+
+	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -60,17 +65,25 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 
 	
 	@Override
-	public List<ArticleVendu> findArticleById(int noArticle) {
+	public List<ArticleVendu> findArticleById(int noCategorie) {
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("no_article", noArticle);
-		return jdbcTemplate.query(FIND_ARTICLE_BY_ID, mapSqlParameterSource, new ArticleVenduRowMapper());
+		mapSqlParameterSource.addValue("no_categorie", noCategorie);
+		return jdbcTemplate.query(FIND_ARTICLE_BY_CATEGORIE, mapSqlParameterSource, new ArticleVenduRowMapper());
 	}
 
 	@Override
-	public List<ArticleVendu> findArticleByCategorie(String nomArticle) {
+	public List<ArticleVendu> findArticleByName(String nomArticle) {
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		mapSqlParameterSource.addValue("nom_article", nomArticle);
-		return jdbcTemplate.query(FIND_ARTICLE_BY_CATEGORIE, mapSqlParameterSource, new ArticleVenduRowMapper());
+		return jdbcTemplate.query(FIND_ARTICLE_BY_NAME, mapSqlParameterSource, new ArticleVenduRowMapper());
+	}
+	
+	@Override
+	public List<ArticleVendu> findArticleByIdAndCategorie(int noCategorie, String nomArticle) {
+		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+		mapSqlParameterSource.addValue("no_categorie", noCategorie);
+		mapSqlParameterSource.addValue("nom_article", nomArticle);
+		return jdbcTemplate.query(FIND_ARTICLE_BY_NAME_AND_CATEGORIE, mapSqlParameterSource, new ArticleVenduRowMapper());
 	}
 
 

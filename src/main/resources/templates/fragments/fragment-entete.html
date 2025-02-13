@@ -4,10 +4,10 @@
 	<nav>
 		<ul>
 			<li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" >S'inscrire - Se connecter</a></li>
-			<!--<li sec:authorize="isAuthenticated()"><a th:href="@{/enchere}" >Enchères</a></li>
+			<li sec:authorize="isAuthenticated()"><a th:href="@{/enchere}" >Enchères</a></li>
 			<li sec:authorize="isAuthenticated()"><a th:href="@{/vendre_article}" >Vendre un article</a></li>
 			<li sec:authorize="isAuthenticated()"><a th:href="@{/login}" >Mon profil</a></li>
-			<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" >Déconnexion</a></li>-->
+			<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" >Déconnexion</a></li>
 		</ul>
 				
 	</nav>

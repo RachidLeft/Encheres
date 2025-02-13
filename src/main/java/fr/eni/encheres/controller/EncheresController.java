@@ -3,11 +3,14 @@ package fr.eni.encheres.controller;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
-
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.encheres.bll.EnchereService;
+import fr.eni.encheres.bo.ArticleVendu;
 
+@SessionAttributes ({"utilisateurEnSession"})
 @Controller
 public class EncheresController {
 	
@@ -17,17 +20,17 @@ public class EncheresController {
 		this.enchereService = enchereService;
 	}
 	
-	@GetMapping("/")
-	public String redirectToIndex() {
-		return "redirect:/login";
-	}
 	
 	@GetMapping("/encheres")
-	public String afficherEncheres() {
+	public String afficherEncheres(Model model) {
 		
 			
 		return "index";
 	}
+	
+	
+		
+
 	
 	
 	
