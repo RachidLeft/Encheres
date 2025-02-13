@@ -20,10 +20,7 @@ public class EncheresController {
 		this.categorieService = categorieService;
 	}
 
-	@GetMapping("/")
-	public String redirectToIndex() {
-		return "redirect:/login";
-	}
+	
 
 	@GetMapping("/encheres")
 	public String afficherEncheres(Model model) { 

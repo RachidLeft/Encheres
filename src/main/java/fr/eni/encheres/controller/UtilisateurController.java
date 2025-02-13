@@ -35,20 +35,26 @@ public class UtilisateurController {
     }
 
     @PostMapping("/ajout")
-    public String ajouterUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur, 
-                                     @RequestParam("confirmMotDePasse") String confirmMotDePasse, 
-                                     BindingResult resultat) {
-        if (!utilisateur.getMotDePasse().equals(confirmMotDePasse)) {
+    public String ajouterUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur,  
+                                     BindingResult resultat, // 🔴 Doit être immédiatement après @Valid !
+                                     @RequestParam("confirmMotDePasse") String confirmMotDePasse) {
 
-            resultat.rejectValue("motDePasse", "error.motDePasse", "Les mots de passe ne correspondent pas.");
-            return "form-ajout-utilisateur"; 
-        }
+        // Vérification des erreurs de validation (champs obligatoires)
         if (resultat.hasErrors()) {
             return "form-ajout-utilisateur"; 
         }
-        utilisateurService.ajouter(utilisateur); 
+
+        // Vérification de la confirmation du mot de passe
+        if (!utilisateur.getMotDePasse().equals(confirmMotDePasse)) {
+            resultat.rejectValue("motDePasse", "error.motDePasse", "Les mots de passe ne correspondent pas.");
+            return "form-ajout-utilisateur"; 
+        }
+
+        // Enregistrement de l'utilisateur
+        utilisateurService.ajouter(utilisateur);  
         return "redirect:/";
     }
+
 
     @GetMapping("/detail/{id}")
     public String detailUtilisateur(@PathVariable("id") int id, Model model) {
