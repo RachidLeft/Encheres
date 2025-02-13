@@ -7,26 +7,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import fr.eni.encheres.bll.EnchereService;
-import fr.eni.encheres.bo.ArticleVendu;
+
+import fr.eni.encheres.bll.CategorieService;
+import fr.eni.encheres.bo.Categorie;
+
 
 @SessionAttributes ({"utilisateurEnSession"})
 @Controller
 public class EncheresController {
 	
-	private EnchereService enchereService;
-	
-	public EncheresController(EnchereService enchereService) {
-		this.enchereService = enchereService;
+
+	CategorieService categorieService;
+
+	public EncheresController(CategorieService categorieService) {
+		this.categorieService = categorieService;
 	}
+
+
 	
-	
-	/*@GetMapping("/encheres")
-	public String afficherEncheres(Model model) {
-		
-			
-		return "index";
-	}*/
 	
 	
 		

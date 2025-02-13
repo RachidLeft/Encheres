@@ -13,6 +13,7 @@ import fr.eni.encheres.bo.Enchere;
 @Service
 public class EnchereServiceImpl implements EnchereService {
 
+
 	@Override
 	public List<Enchere> consulterEnchere() {
 		// TODO Auto-generated method stub
@@ -24,6 +25,6 @@ public class EnchereServiceImpl implements EnchereService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	
 }

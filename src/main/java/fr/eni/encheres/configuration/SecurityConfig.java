@@ -30,7 +30,7 @@ public class SecurityConfig {
     			.passwordParameter("mot_de_passe");
     			form.loginPage("/login").permitAll()
     			.failureUrl("/login?error=true")
-    			.defaultSuccessUrl("/").permitAll();			
+    			.defaultSuccessUrl("/session").permitAll();			
     		});
     		
     	
