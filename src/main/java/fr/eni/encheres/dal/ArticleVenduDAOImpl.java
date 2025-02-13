@@ -21,15 +21,15 @@ import fr.eni.encheres.bo.Utilisateur;
 public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	
 	private final String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, no_utilisateur, no_categorie)"
-			+ "VALUES (:nom_article, :description, :date_debut_encheres, :date_fin_encheres, :prix_initial, :no_utilisateur, :no_categorie)";
+			+ " VALUES (:nom_article, :description, :date_debut_encheres, :date_fin_encheres, :prix_initial, :no_utilisateur, :no_categorie)";
 	private final String FIND_ALL = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
-			+ "JOIN UTILISATEUR AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIE AS c ON av.no_categorie = c.no_categorie";
+			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie";
 	private final String FIND_ARTICLE_BY_CATEGORIE = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
-			+ "JOIN UTILISATEUR AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIE AS c ON av.no_categorie = c.no_categorie WHERE no_categorie = :no_categorie";
+			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie WHERE av.no_categorie = :no_categorie";
 	private final String FIND_ARTICLE_BY_NAME = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
-			+ "JOIN UTILISATEUR AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIE AS c ON av.no_categorie = c.no_categorie WHERE nom_article = :nom_article";
+			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie WHERE av.nom_article LIKE :nom_article";
 	private final String FIND_ARTICLE_BY_NAME_AND_CATEGORIE = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
-			+ "JOIN UTILISATEUR AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIE AS c ON av.no_categorie = c.no_categorie WHERE nom_article = :nom_article AND no_categorie = :no_categorie";
+			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie WHERE av.nom_article LIKE :nom_article AND av.no_categorie = :no_categorie";
 
 	
 
@@ -44,7 +44,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		mapSqlParameterSource.addValue("description", articleVendu.getDescription());
 		mapSqlParameterSource.addValue("date_debut_encheres", articleVendu.getDateDebutEncheres());
 		mapSqlParameterSource.addValue("date_fin_encheres", articleVendu.getDateFinEncheres());
-		mapSqlParameterSource.addValue("prix_vente", articleVendu.getPrixVente());
+		mapSqlParameterSource.addValue("prix_initial", articleVendu.getMiseAPrix());
 		mapSqlParameterSource.addValue("no_utilisateur", articleVendu.getVend().getNoUtilisateur());
 		mapSqlParameterSource.addValue("no_categorie", articleVendu.getCategorie().getNoCategorie());
 		
@@ -100,12 +100,12 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 			av.setDateDebutEncheres(rs.getObject("date_debut_encheres", LocalDateTime.class));
 			av.setDateFinEncheres(rs.getObject("date_fin_encheres", LocalDateTime.class));
 			av.setMiseAPrix(rs.getInt("prix_initial"));
-			av.setPrixVente(rs.getInt("prix_vente"));
 			
 			
 			
 			Utilisateur vend = new Utilisateur();
 			vend.setNoUtilisateur(rs.getInt("no_utilisateur"));
+			vend.setPseudo(rs.getString("pseudo"));
 			av.setVend(vend);
 			
 			Categorie cat = new Categorie();

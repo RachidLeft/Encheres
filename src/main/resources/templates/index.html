@@ -11,7 +11,7 @@
 
 <main>
 <h1>Liste des enchères</h1>
-
+ 
 	<form action="">
 		<ul>
 			<li>
@@ -19,9 +19,10 @@
 				<input id="nom_article" type="text" placeholder="Le nom de l'article contient"/>
 			</li>
 			<li>
-				<label for="no_categorie">Catégories</label>
-				<select id="no_categorie" >
-					<option value="id"></option>
+				<label for="categorie">Catégories</label>
+				<select name="categorie" id="categorie" >
+					<option value="0">Toutes</option>
+					<option th:each="c : ${categories}" th:text="${c.libelle}" th:value="${c.noCategorie}"></option>
 				</select>
 			</li>
 			<li>
@@ -29,26 +30,25 @@
 			</li>
 		</ul>
 	</form>
-	<form action="">
-		<ul>
-			<li>
-				<label for="nom_article"></label>
-				<input id="nom_article" type="text" value=""/>
-			</li>
-			<li>
-				<label for="prix_vente">Prix :</label>
-				<input id="prix_vente" type="text" value=""/>
-			</li>
-			<li>
-				<label for="idFinEnchere">Fin de l'enchère :</label>
-				<input id="idFinEnchere" type="date" value=""/>
-			</li>
-			<li>
-				<label for="idVendeur">Vendeur :</label>
-				<input id="idVendeur" type="text" value=""/>
-			</li>
-		</ul>
-	</form>
+	<table>
+		<thead>
+			<tr>
+				<th></th>
+				<th>Prix :</th>
+				<th>Fin de l'enchère :</th>
+				<th>Vendeur :</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="av : ${article_vendu}">
+				<td th:text="${av.nomArticle}"></td>
+				<td th:text="${av.miseAPrix}"></td>
+				<td th:text="${av.dateFinEncheres}"></td>
+				<td th:text="${av.vend.pseudo}"></td>
+			</tr>
+		</tbody>
+
+	</table>
 </main>
 </body>
 </html>

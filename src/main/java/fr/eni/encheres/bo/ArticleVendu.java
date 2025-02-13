@@ -14,9 +14,9 @@ public class ArticleVendu {
 	
 	private int noArticle;
 	@NotBlank
-	@Size(max = 30)
+	@Size(min = 5, max = 30)
 	private String nomArticle;
-	@Size(max = 300)
+	@Size(min = 5, max = 300)
 	private String description;
 	@NotNull
 	private LocalDateTime dateDebutEncheres;

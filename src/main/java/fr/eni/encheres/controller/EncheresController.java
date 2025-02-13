@@ -1,6 +1,6 @@
 package fr.eni.encheres.controller;
 
-import java.util.List;
+
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,12 +21,12 @@ public class EncheresController {
 	}
 	
 	
-	@GetMapping("/encheres")
+	/*@GetMapping("/encheres")
 	public String afficherEncheres(Model model) {
 		
 			
 		return "index";
-	}
+	}*/
 	
 	
 		
