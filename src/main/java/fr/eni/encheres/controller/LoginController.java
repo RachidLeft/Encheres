@@ -60,7 +60,7 @@ System.out.println("aaaaaaaaaaaaaaaaaaa"+utilisateur);
 			
 		}
 		System.out.println("tessssssssssssss"+utilisateurSession);
-		return "redirect:/";
+		return "index";
 
 	}
 	
