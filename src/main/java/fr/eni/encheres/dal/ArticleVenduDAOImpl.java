@@ -79,7 +79,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	}
 	
 	@Override
-	public List<ArticleVendu> findArticleByIdAndCategorie(int noCategorie, String nomArticle) {
+	public List<ArticleVendu> findArticleByNameAndCategorie(int noCategorie, String nomArticle) {
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		mapSqlParameterSource.addValue("no_categorie", noCategorie);
 		mapSqlParameterSource.addValue("nom_article", nomArticle);

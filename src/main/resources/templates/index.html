@@ -12,11 +12,11 @@
 <main>
 <h1>Liste des enchères</h1>
  
-	<form action="">
+	<form th:action="@{/encheres/filtre}" method="post">
 		<ul>
 			<li>
 				<label for="nom_article">Filtres</label>
-				<input id="nom_article" type="text" placeholder="Le nom de l'article contient"/>
+				<input name="motCle" id="nom_article" type="text" placeholder="Le nom de l'article contient"/>
 			</li>
 			<li>
 				<label for="categorie">Catégories</label>

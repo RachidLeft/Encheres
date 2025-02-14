@@ -15,7 +15,7 @@ public interface ArticleVenduDAO {
 	
 	List<ArticleVendu> findArticleByName(String nomArticle);
 
-	List<ArticleVendu> findArticleByIdAndCategorie(int noCategorie, String nomArticle);
+	List<ArticleVendu> findArticleByNameAndCategorie(int noCategorie, String nomArticle);
 	
 	
 

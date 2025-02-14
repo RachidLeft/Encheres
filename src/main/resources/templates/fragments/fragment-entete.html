@@ -8,7 +8,7 @@
     <nav class="bg-blue-500 p-4 text-white">
         <div class="container mx-auto">
             <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-bold">ENI-Enchères</h1>
+                <h1 class="text-2xl font-bold"><a th:href="@{/encheres}">ENI-Enchères</a></h1>
                 <div class="flex items-center space-x-6">
                     <!-- Liens du menu de navigation -->
                     <li sec:authorize="!isAuthenticated()" class="inline-block">

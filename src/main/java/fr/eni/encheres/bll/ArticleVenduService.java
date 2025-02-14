@@ -9,5 +9,6 @@ public interface ArticleVenduService {
 	List<ArticleVendu> consulterLesArticles();
 	
 	
+	List<ArticleVendu> consulterLesArticlesNomEtCategorie(String nomArticle, int idCategorie);
 	
 }

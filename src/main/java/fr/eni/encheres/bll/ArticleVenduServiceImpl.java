@@ -1,5 +1,6 @@
 package fr.eni.encheres.bll;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -22,6 +23,30 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	public List<ArticleVendu> consulterLesArticles() {
 
 		return this.articleVenduDAO.findAll();
+	}
+
+
+
+	@Override
+	public List<ArticleVendu> consulterLesArticlesNomEtCategorie(String nomArticle, int idCategorie) {
+		
+		List<ArticleVendu> articleVendu = new ArrayList<ArticleVendu>();
+		
+		if ((nomArticle.isBlank()) && (idCategorie != 0)) {
+			articleVendu = this.articleVenduDAO.findArticleById(idCategorie);
+		}
+		if ((!nomArticle.isBlank()) && (idCategorie == 0)) {
+			articleVendu = this.articleVenduDAO.findArticleByName("%" + nomArticle + "%");
+		}
+		if ((!nomArticle.isBlank()) && (idCategorie != 0)) {
+			articleVendu = this.articleVenduDAO.findArticleByNameAndCategorie(idCategorie, "%" + nomArticle + "%");
+		}
+		if ((nomArticle.isBlank()) && (idCategorie == 0)) {
+			articleVendu = this.articleVenduDAO.findAll();
+		}
+				
+		
+		return articleVendu;
 	}
 
 	
