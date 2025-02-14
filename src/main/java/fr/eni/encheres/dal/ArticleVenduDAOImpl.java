@@ -24,6 +24,7 @@ import fr.eni.encheres.bo.Utilisateur;
 public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	
 	private final String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, no_utilisateur, no_categorie)"
+
 			+ " VALUES (:nom_article, :description, :date_debut_encheres, :date_fin_encheres, :prix_initial, :no_utilisateur, :no_categorie)";
 	private final String FIND_ALL = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
 			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie";
@@ -33,6 +34,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie WHERE av.nom_article LIKE :nom_article";
 	private final String FIND_ARTICLE_BY_NAME_AND_CATEGORIE = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
 			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie WHERE av.nom_article LIKE :nom_article AND av.no_categorie = :no_categorie";
+
 
 	private final String FIND_ARTICLE_BY_ID = "SELECT "
 	        + "av.no_article AS av_no_article, "
@@ -119,6 +121,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	}
 	
 	@Override
+
 	public List<ArticleVendu> findArticleByNameAndCategorie(int noCategorie, String nomArticle) {
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		mapSqlParameterSource.addValue("no_categorie", noCategorie);
@@ -126,10 +129,12 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		return jdbcTemplate.query(FIND_ARTICLE_BY_NAME_AND_CATEGORIE, mapSqlParameterSource, new ArticleVenduRowMapper());
 	}
 
+
 	@Override
 	public ArticleVendu findById(int noArticle) {
 	    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 	    mapSqlParameterSource.addValue("no_article", noArticle);
+
 
 
 	    ArticleVendu article = jdbcTemplate.queryForObject(FIND_ARTICLE_BY_ID, mapSqlParameterSource, new ArticleVenduDetailRowMapper());

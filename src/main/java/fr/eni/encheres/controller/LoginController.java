@@ -67,7 +67,6 @@ System.out.println("aaaaaaaaaaaaaaaaaaa"+utilisateur);
 	
 	@ModelAttribute("utilisateurEnSession")
 	 public Utilisateur addMembreEnSession() {
-	  System.out.println("Add membre en session");
 	  return new Utilisateur();
 	 }
 

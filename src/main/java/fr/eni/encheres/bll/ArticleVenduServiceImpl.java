@@ -1,6 +1,7 @@
 package fr.eni.encheres.bll;
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,16 +11,18 @@ import org.springframework.stereotype.Service;
 
 import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.dal.ArticleVenduDAO;
+import fr.eni.encheres.dal.CategorieDAO;
 
 @Service
 public class ArticleVenduServiceImpl implements ArticleVenduService {
 	
-
-	private ArticleVenduDAO articleVenduDAO;
-		
-
-	public ArticleVenduServiceImpl(ArticleVenduDAO articleVenduDAO) {
+	
+	ArticleVenduDAO articleVenduDAO;
+	CategorieDAO categorieDAO;
+	
+	public ArticleVenduServiceImpl(ArticleVenduDAO articleVenduDAO, CategorieDAO categorieDAO) {
 		this.articleVenduDAO = articleVenduDAO;
+		this.categorieDAO = categorieDAO;
 	}
 	
 
@@ -60,7 +63,10 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 
 	}
 
-	
+	@Override
+	public void creerArticleAVendre(ArticleVendu articleVendu){
+			articleVenduDAO.creerArticle(articleVendu);
+	}
 	
 
 }

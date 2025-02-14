@@ -8,7 +8,7 @@ public class BusinessException extends Exception{
 	private List<String> clesErreurs = new ArrayList<String>();
 	
 	public void addErreur(String cleErreur) {
-		if (cleErreur == null) {
+		if (clesErreurs == null) {
 			clesErreurs = new ArrayList<String>();
 			
 		}

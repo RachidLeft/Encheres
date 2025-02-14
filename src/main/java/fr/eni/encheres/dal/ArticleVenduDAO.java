@@ -19,6 +19,7 @@ public interface ArticleVenduDAO {
 	
 	public ArticleVendu findById(int noArticle);
 	
+
 	
 
 }

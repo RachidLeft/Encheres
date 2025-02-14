@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Enchères</title>
+</head>
+<body>
+
+<div th:insert="~{fragments/fragment-entete :: entete}"></div>
+
+<main >
+		<form th:action="@{/encheres/nouvellevente}" method="POST" th:object="${article}">
+			<h1>Nouvelle vente</h1>
+			
+			<ul class="">
+				<li>
+					<label for="idNomArticle">Article</label>
+					<input id="idNomArticle" type="text" th:field="*{nomArticle}"/>
+					
+				</li>
+				<li>
+					<label for="idDescription">Description</label>
+					<textarea id="idDescription" min="5" max="300" th:field="*{description}"></textarea>
+
+				</li>
+				<li>
+					<label for="categorie">Catégories</label>
+				<select name="categorie" id="categorie" >
+					<option th:each="c : ${categories}" th:text="${c.libelle}" th:value="${c.noCategorie}"></option>
+				</select>
+					
+				</li>
+				<li>
+					<label for="photo">Photo de l'article</label>
+				</li>
+				<li>
+					<label for="idMiseAPrix">Mise à prix :</label>
+					<input id="idMiseAPrix" type="number" min="1" th:field="*{miseAPrix}"/>
+					
+				</li>
+				<li>
+					<label for="idDateDebutEncheres">Début de l'enchère</label>
+					<input id="idDateDebutEncheres" type="datetime-local" th:field="*{dateDebutEncheres}"/>
+					
+				</li>
+				<li>
+					<label for="idDteFinEncheres">Fin de l'enchère</label>
+					<input id="idDteFinEncheres" type="datetime-local" th:field="*{dateFinEncheres}"/>
+					
+				</li>
+				<li>
+					<label for="idRue">Rue</label>
+					<textarea id="idRue" th:field="*{lieuRetrait.rue}"></textarea>
+				</li>
+				<li>
+					<label for="idCodepostal">Code Postal</label>
+					<textarea id="idcodepostal" th:field="*{lieuRetrait.codePostal}"></textarea>
+
+				</li>
+				<li>
+					<label for="idVille">Ville</label>
+					<textarea id="idVille" th:field="*{lieuRetrait.ville}"></textarea>
+					
+				</li>
+				<li>
+					<button type="submit">Enregistrer</button>
+					<table>
+						<td>
+							<a th:href="@{/encheres}">Annuler</a>
+						</td>
+					</table>
+				</li>
+			</ul>
+		</form>
+	</main>
+
+
+
+</body>
+</html>
