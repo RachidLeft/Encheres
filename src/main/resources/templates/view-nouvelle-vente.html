@@ -9,18 +9,18 @@
 <div th:insert="~{fragments/fragment-entete :: entete}"></div>
 
 <main >
-		<form action="" method="POST">
+		<form action="" method="POST" th:object="${article}">
 			<h1>Nouvelle vente</h1>
 			
 			<ul class="">
 				<li>
-					<label for="nomArticle">Article</label>
-					<input id="nomArticle" type="text" />
+					<label for="idNomArticle">Article</label>
+					<input id="idNomArticle" type="text" />
 					
 				</li>
 				<li>
-					<label for="description">Description</label>
-					<textarea id="description" ></textarea>
+					<label for="idDescription">Description</label>
+					<textarea id="idDescription" min="5" max="300"></textarea>
 
 				</li>
 				<li>
@@ -34,32 +34,32 @@
 					<label for="photo">Photo de l'article</label>
 				</li>
 				<li>
-					<label for="miseAPrix">Mise à prix</label>
-					<input id="miseAPrix" type="number" />
+					<label for="idMiseAPrix">Mise à prix :</label>
+					<input id="idMiseAPrix" type="number" min="1"/>
 					
 				</li>
 				<li>
-					<label for="dateDebutEncheres">Début de l'enchère</label>
-					<input id="dateDebutEncheres" type="datetime" />
+					<label for="idDateDebutEncheres">Début de l'enchère</label>
+					<input id="idDateDebutEncheres" type="datetime-local" />
 					
 				</li>
 				<li>
-					<label for="dateFinEncheres">Fin de l'enchère</label>
-					<input id="dateFinEncheres" type="datetime"/>
+					<label for="idDteFinEncheres">Fin de l'enchère</label>
+					<input id="idDteFinEncheres" type="datetime-local"/>
 					
 				</li>
 				<li>
-					<label for="rue">Rue</label>
-					<textarea id="rue"></textarea>
+					<label for="idRue">Rue</label>
+					<textarea id="idRue" th:field="*{lieuRetrait.rue}"></textarea>
 				</li>
 				<li>
-					<label for="codepostal">Code Postal</label>
-					<textarea id="codepostal" ></textarea>
+					<label for="idCodepostal">Code Postal</label>
+					<textarea id="idcodepostal" th:field="*{lieuRetrait.codePostal}"></textarea>
 
 				</li>
 				<li>
-					<label for="ville">Ville</label>
-					<textarea id="ville" ></textarea>
+					<label for="idVille">Ville</label>
+					<textarea id="idVille" th:field="*{lieuRetrait.ville}"></textarea>
 					
 				</li>
 				<li>

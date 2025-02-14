@@ -28,17 +28,22 @@ public class ArticleVenduController {
 	}
 	
 	@GetMapping("/encheres/nouvellevente")
-	public String creerArticle(Model model ) {
+	public String creerArticle(Model model, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateur ) {
 		ArticleVendu article = new ArticleVendu();
-		model.addAttribute("article", article);
+		
 		
 		//Affiche liste categorie 
 		List<Categorie> categories = categorieService.findAll();
 		model.addAttribute("categories",categories);
 		
 		//TODO récupérer l'adresse de l'utilisateur
+		Retrait retrait = new Retrait();
+		article.setLieuRetrait(retrait);
+		article.getLieuRetrait().setRue(utilisateur.getRue());
+		article.getLieuRetrait().setCodePostal(utilisateur.getCodePostal());
+		article.getLieuRetrait().setVille(utilisateur.getVille());
 		
-		
+		model.addAttribute("article", article);
 		return "view-nouvelle-vente";
 	}
 	
