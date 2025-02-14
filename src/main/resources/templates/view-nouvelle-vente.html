@@ -1,80 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Enchères</title>
+    <meta charset="UTF-8">
+    <title>Enchères</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-100 p-6">
 
 <div th:insert="~{fragments/fragment-entete :: entete}"></div>
 
-<main >
-		<form th:action="@{/encheres/nouvellevente}" method="POST" th:object="${article}">
-			<h1>Nouvelle vente</h1>
+<main class="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-8 mt-6">
+    <h1 class="text-2xl font-bold text-blue-600 text-center">Nouvelle Vente</h1>
+    
+    <form th:action="@{/encheres/nouvellevente}" method="POST" th:object="${article}" class="space-y-6 mt-6">
+        <ul class="space-y-4">
+            <li>
+                <label for="idNomArticle" class="block text-sm font-semibold text-gray-700">Article</label>
+                <input id="idNomArticle" type="text" th:field="*{nomArticle}" 
+                    class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500"/>
+            </li>
+            
+            <li>
+                <label for="idDescription" class="block text-sm font-semibold text-gray-700">Description</label>
+                <textarea id="idDescription" min="5" max="300" th:field="*{description}" 
+                    class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500"></textarea>
+            </li>
+            
+            <li>
+                <label for="categorie" class="block text-sm font-semibold text-gray-700">Catégorie</label>
+                <select name="categorie" id="categorie" 
+                    class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500">
+                    <option th:each="c : ${categories}" th:text="${c.libelle}" th:value="${c.noCategorie}"></option>
+                </select>
+            </li>
+
+            <li>
+                <label for="photo" class="block text-sm font-semibold text-gray-700">Photo de l'article</label>
+                <!-- Ajoutez un champ de téléchargement de photo si nécessaire -->
+            </li>
+
+            <li>
+                <label for="idMiseAPrix" class="block text-sm font-semibold text-gray-700">Mise à prix</label>
+                <input id="idMiseAPrix" type="number" min="1" th:field="*{miseAPrix}" 
+                    class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500"/>
+            </li>
+
+            <li>
+                <label for="idDateDebutEncheres" class="block text-sm font-semibold text-gray-700">Début de l'enchère</label>
+                <input id="idDateDebutEncheres" type="datetime-local" th:field="*{dateDebutEncheres}" 
+                    class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500"/>
+            </li>
+
+            <li>
+                <label for="idDteFinEncheres" class="block text-sm font-semibold text-gray-700">Fin de l'enchère</label>
+                <input id="idDteFinEncheres" type="datetime-local" th:field="*{dateFinEncheres}" 
+                    class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500"/>
+            </li>
+
+            <li>
+			    <label for="idRue" class="block text-sm font-semibold text-gray-700">Rue</label>
+			    <input id="idRue" th:field="*{lieuRetrait.rue}" 
+			        class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500" type="text"/>
+			</li>
+
+         	 <li>
+			    <label for="idCodepostal" class="block text-sm font-semibold text-gray-700">Code Postal</label>
+			    <input id="idCodepostal" th:field="*{lieuRetrait.codePostal}" 
+			        class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500" type="text"/>
+			</li>
 			
-			<ul class="">
-				<li>
-					<label for="idNomArticle">Article</label>
-					<input id="idNomArticle" type="text" th:field="*{nomArticle}"/>
-					
-				</li>
-				<li>
-					<label for="idDescription">Description</label>
-					<textarea id="idDescription" min="5" max="300" th:field="*{description}"></textarea>
+			<li>
+			    <label for="idVille" class="block text-sm font-semibold text-gray-700">Ville</label>
+			    <input id="idVille" th:field="*{lieuRetrait.ville}" 
+			        class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500" type="text"/>
+			</li>
 
-				</li>
-				<li>
-					<label for="categorie">Catégories</label>
-				<select name="categorie" id="categorie" >
-					<option th:each="c : ${categories}" th:text="${c.libelle}" th:value="${c.noCategorie}"></option>
-				</select>
-					
-				</li>
-				<li>
-					<label for="photo">Photo de l'article</label>
-				</li>
-				<li>
-					<label for="idMiseAPrix">Mise à prix :</label>
-					<input id="idMiseAPrix" type="number" min="1" th:field="*{miseAPrix}"/>
-					
-				</li>
-				<li>
-					<label for="idDateDebutEncheres">Début de l'enchère</label>
-					<input id="idDateDebutEncheres" type="datetime-local" th:field="*{dateDebutEncheres}"/>
-					
-				</li>
-				<li>
-					<label for="idDteFinEncheres">Fin de l'enchère</label>
-					<input id="idDteFinEncheres" type="datetime-local" th:field="*{dateFinEncheres}"/>
-					
-				</li>
-				<li>
-					<label for="idRue">Rue</label>
-					<textarea id="idRue" th:field="*{lieuRetrait.rue}"></textarea>
-				</li>
-				<li>
-					<label for="idCodepostal">Code Postal</label>
-					<textarea id="idcodepostal" th:field="*{lieuRetrait.codePostal}"></textarea>
-
-				</li>
-				<li>
-					<label for="idVille">Ville</label>
-					<textarea id="idVille" th:field="*{lieuRetrait.ville}"></textarea>
-					
-				</li>
-				<li>
-					<button type="submit">Enregistrer</button>
-					<table>
-						<td>
-							<a th:href="@{/encheres}">Annuler</a>
-						</td>
-					</table>
-				</li>
-			</ul>
-		</form>
-	</main>
-
-
+            <li class="flex justify-between items-center">
+                <button type="submit" 
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg w-full sm:w-auto">
+                    Enregistrer
+                </button>
+                <a th:href="@{/encheres}" 
+                    class="text-blue-500 hover:text-blue-700 text-sm font-semibold">Annuler</a>
+            </li>
+        </ul>
+    </form>
+</main>
 
 </body>
 </html>
