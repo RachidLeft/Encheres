@@ -27,8 +27,8 @@ public class ArticleVenduController {
 		this.categorieService = categorieService;
 	}
 	
-	@GetMapping("/creer")
-	public String creerArticle(Model model /*@ModelAttribute("utilisateurEnSession") Utilisateur utilsateur*/) {
+	@GetMapping("/encheres/nouvellevente")
+	public String creerArticle(Model model ) {
 		ArticleVendu article = new ArticleVendu();
 		model.addAttribute("article", article);
 		
@@ -36,13 +36,7 @@ public class ArticleVenduController {
 		List<Categorie> categories = categorieService.findAll();
 		model.addAttribute("categories",categories);
 		
-		//Permet de recuperer l'adresse de l'utilisateur
-		Retrait retrait = new Retrait();
-		/*article.getLieuRetrait().setRue(utilsateur.getRue());
-		article.getLieuRetrait().setCodePostal(utilsateur.getCodePostal());
-		article.getLieuRetrait().setVille(utilsateur.getVille());*/
-		
-		
+		//TODO récupérer l'adresse de l'utilisateur
 		
 		
 		return "view-nouvelle-vente";
