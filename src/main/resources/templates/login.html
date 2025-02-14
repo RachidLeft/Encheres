@@ -1,39 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<div th:insert="~{fragments/fragment-entete :: entete}"></div>
-<body>
-<div class="login-container">
+ <nav class="bg-blue-500 p-4 text-white">
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold"><a th:href="@{/encheres}">ENI-Enchères</a></h1>
+                <div class="flex items-center space-x-6">
+                    <!-- Liens du menu de navigation -->
+                  
+                    <li sec:authorize="isAuthenticated()" class="inline-block">
+                        <a th:href="@{/enchere}" class="hover:underline">Enchères</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()" class="inline-block">
+                        <a th:href="@{/vendre_article}" class="hover:underline">Vendre un article</a>
+                    </li>
+             		<li sec:authorize="isAuthenticated()" class="inline-block">
+                        <a th:href="@{/utilisateurs/detail/{id}(id=${utilisateurEnSession.noUtilisateur})}" class="hover:underline">Mon profil</a>
+                    </li> 
+                    <li sec:authorize="isAuthenticated()" class="inline-block">
+                        <a th:href="@{/logout}" class="hover:underline">Déconnexion</a>
+                    </li>
+                </div>
+
+                <!-- Section utilisateur connecté -->
+                <div class="flex flex-col items-end">
+                    <div class="text-right">
+                        <p th:text="'Connecté : ' + ${utilisateurEnSession.pseudo}" class="mt-2"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+<body class="bg-gray-100 p-6">
 
 
+
+<div class="flex justify-center items-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
+        <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Connexion</h2>
+        
         <form th:action="@{/login}" method="POST">
         
-        <p th:if="${param.error}">L'email ou le mot de passe saisie sont invalide</p>
+            <p th:if="${param.error}" class="text-red-500 text-sm mb-4">L'email ou le mot de passe saisi est invalide</p>
         
-            <label for="username">Identifiant :</label>
-            <input type="text"  id="idpseudo" name="pseudo" required>
-
-            <label for="password">Mot de passe :</label>
-            <input type="password" id="idPassword"  name="mot_de_passe" required>
-
-            <div class="options">
-                <button type="submit">Connexion</button>
-                <label>
-                    <input type="checkbox" name="remember-me"> Se souvenir de moi
-                </label>
+            <div class="mb-4">
+                <label for="idpseudo" class="block text-sm font-semibold mb-2">Identifiant :</label>
+                <input type="text" id="idpseudo" name="pseudo" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
-            <div class="links">
-                <a href="">Mot de passe oublié</a>
+            <div class="mb-6">
+                <label for="idPassword" class="block text-sm font-semibold mb-2">Mot de passe :</label>
+                <input type="password" id="idPassword" name="mot_de_passe" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="flex justify-between items-center mb-6">
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white py-2 rounded font-semibold">Connexion</button>
+            </div>
+
+            <div class="flex justify-between items-center text-sm">
+                <label class="flex items-center">
+                    <input type="checkbox" name="remember-me" class="mr-2"> Se souvenir de moi
+                </label>
+                <a href="#" class="text-blue-500 hover:underline">Mot de passe oublié</a>
             </div>
         </form>
 
-        <div class="register">
-            <a th:href="@{/utilisateurs/ajout}" class="btn-register">Créer un compte</a>
+        <div class="mt-6 text-center">
+            <a th:href="@{/utilisateurs/ajout}" class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded font-semibold inline-block">Créer un compte</a>
         </div>
     </div>
+</div>
+
 </body>
 </html>
