@@ -9,18 +9,18 @@
 <div th:insert="~{fragments/fragment-entete :: entete}"></div>
 
 <main >
-		<form action="" method="POST" th:object="${article}">
+		<form th:action="@{/encheres/nouvellevente}" method="POST" th:object="${article}">
 			<h1>Nouvelle vente</h1>
 			
 			<ul class="">
 				<li>
 					<label for="idNomArticle">Article</label>
-					<input id="idNomArticle" type="text" />
+					<input id="idNomArticle" type="text" th:field="*{nomArticle}"/>
 					
 				</li>
 				<li>
 					<label for="idDescription">Description</label>
-					<textarea id="idDescription" min="5" max="300"></textarea>
+					<textarea id="idDescription" min="5" max="300" th:field="*{description}"></textarea>
 
 				</li>
 				<li>
@@ -35,17 +35,17 @@
 				</li>
 				<li>
 					<label for="idMiseAPrix">Mise à prix :</label>
-					<input id="idMiseAPrix" type="number" min="1"/>
+					<input id="idMiseAPrix" type="number" min="1" th:field="*{miseAPrix}"/>
 					
 				</li>
 				<li>
 					<label for="idDateDebutEncheres">Début de l'enchère</label>
-					<input id="idDateDebutEncheres" type="datetime-local" />
+					<input id="idDateDebutEncheres" type="datetime-local" th:field="*{dateDebutEncheres}"/>
 					
 				</li>
 				<li>
 					<label for="idDteFinEncheres">Fin de l'enchère</label>
-					<input id="idDteFinEncheres" type="datetime-local"/>
+					<input id="idDteFinEncheres" type="datetime-local" th:field="*{dateFinEncheres}"/>
 					
 				</li>
 				<li>

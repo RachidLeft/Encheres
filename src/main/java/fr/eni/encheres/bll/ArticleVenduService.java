@@ -5,5 +5,5 @@ import fr.eni.encheres.exception.BusinessException;
 
 public interface ArticleVenduService {
 	
-	void creerArticleAVendre(ArticleVendu articleVendu) throws BusinessException;
+	void creerArticleAVendre(ArticleVendu articleVendu);
 }

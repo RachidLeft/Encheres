@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.encheres.bll.ArticleVenduService;
@@ -28,7 +29,7 @@ public class ArticleVenduController {
 	}
 	
 	@GetMapping("/encheres/nouvellevente")
-	public String creerArticle(Model model, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateur ) {
+	public String afficherCreationNouvelleVente(Model model, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateur ) {
 		ArticleVendu article = new ArticleVendu();
 		
 		
@@ -46,5 +47,7 @@ public class ArticleVenduController {
 		model.addAttribute("article", article);
 		return "view-nouvelle-vente";
 	}
+	
+
 	
 }
