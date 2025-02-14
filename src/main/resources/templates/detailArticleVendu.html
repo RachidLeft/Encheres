@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails Vente</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+<div th:insert="~{fragments/fragment-entete :: entete}"></div>
+<div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-8">
+    <h1 class="text-3xl font-bold mb-6 text-blue-600">Détails Vente</h1>
+    <div class="space-y-4">
+        <p><span class="font-semibold" th:text="${articleVendu.nomArticle}"></span></p>
+        <p><span class="font-semibold">Description :</span> <span th:text="${articleVendu.description}"></span></p>
+        <p><span class="font-semibold">Categorie :</span> <span th:text="${articleVendu.categorie.libelle}"></span></p>
+        <p><span class="font-semibold">Meilleur offre :</span> 
+            <span th:if="${articleVendu.enchere != null and articleVendu.enchere[0].montantEnchere != 0}">
+                <span th:text="${articleVendu.enchere[0].montantEnchere} + ' pts par '"></span>
+                <a class="text-blue-500 hover:underline"
+                   th:href="@{'/utilisateurs/detail/' + ${articleVendu.enchere[0].encherisseur.noUtilisateur}}"
+                   th:text="${articleVendu.enchere[0].encherisseur.pseudo}"></a>
+            </span>
+            <span th:if="${articleVendu.enchere == null or articleVendu.enchere[0].montantEnchere == 0}">
+                Aucune enchère
+            </span>
+        </p>
+        <p><span class="font-semibold">Mise à prix :</span> <span th:text="${articleVendu.miseAPrix} + ' points'"></span></p>
+        <p><span class="font-semibold">Fin de l'enchère :</span> <span th:text="${articleVendu.dateFinEncheres}"></span></p>
+        <p><span class="font-semibold">Retrait :</span> <span th:text="${articleVendu.lieuRetrait.rue} + ' ' + ${articleVendu.lieuRetrait.codePostal} + ' ' + ${articleVendu.lieuRetrait.ville}"></span></p>
+        
+        <!-- Lien vers le vendeur -->
+        <p><span class="font-semibold">Vendeur :</span>
+            <a class="text-blue-500 hover:underline"
+               th:href="@{'/utilisateurs/detail/' + ${articleVendu.vend.noUtilisateur}}"
+               th:text="${articleVendu.vend.pseudo}"></a>
+        </p>
+    </div>
+</div>
+</body>
+</html>

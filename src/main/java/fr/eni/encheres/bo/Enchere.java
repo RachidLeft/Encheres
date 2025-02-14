@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public class Enchere {
 	//Attributs
-
+	private int noEnchere;
 	private LocalDateTime dateEnchere;
 
 	private int montantEnchere;
@@ -60,5 +60,15 @@ public class Enchere {
 	}
 	public void setArticle(ArticleVendu article) {
 		this.article = article;
+	}
+
+
+	public int getNoEnchere() {
+		return noEnchere;
+	}
+
+
+	public void setNoEnchere(int noEnchere) {
+		this.noEnchere = noEnchere;
 	}
 }

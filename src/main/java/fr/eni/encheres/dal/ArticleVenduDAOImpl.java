@@ -3,6 +3,7 @@ package fr.eni.encheres.dal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Repository;
 
 import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.bo.Categorie;
+import fr.eni.encheres.bo.Enchere;
+import fr.eni.encheres.bo.Retrait;
 import fr.eni.encheres.bo.Utilisateur;
 
 @Repository
@@ -30,6 +33,43 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie WHERE av.nom_article LIKE :nom_article";
 	private final String FIND_ARTICLE_BY_NAME_AND_CATEGORIE = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
 			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie WHERE av.nom_article LIKE :nom_article AND av.no_categorie = :no_categorie";
+
+	private final String FIND_ARTICLE_BY_ID = "SELECT "
+	        + "av.no_article AS av_no_article, "
+	        + "av.nom_article AS av_nom_article, "
+	        + "av.description AS av_description, "
+	        + "av.prix_initial AS av_prix_initial, "
+	        + "av.date_debut_encheres AS av_date_debut_encheres, "
+	        + "av.date_fin_encheres AS av_date_fin_encheres, "
+	        + "av.prix_vente AS av_prix_vente, "
+	        + "c.no_categorie AS c_no_categorie, "
+	        + "c.libelle AS c_libelle, "
+	        + "u.no_utilisateur AS u_no_utilisateur, "
+	        + "u2.no_utilisateur AS u2_no_utilisateur, "
+	        + "u.pseudo AS u_pseudo_vendeur, "
+	        + "u2.pseudo AS u2_pseudo_encherisseur, "
+	        + "r.code_postal AS r_code_postal, "
+	        + "r.rue AS r_rue, "
+	        + "r.ville AS r_ville, "
+	        + "e.montant_enchere AS e_montant_enchere "
+	        + "FROM ARTICLES_VENDUS av "
+	        + "LEFT JOIN UTILISATEURS u ON av.no_utilisateur = u.no_utilisateur "
+	        + "LEFT JOIN CATEGORIES c ON av.no_categorie = c.no_categorie "
+	        + "LEFT JOIN RETRAITS r ON r.no_article = av.no_article "
+	        + "LEFT JOIN ENCHERES e ON e.no_article = av.no_article "
+	        + "LEFT JOIN UTILISATEURS u2 ON e.no_utilisateur = u2.no_utilisateur "
+	        + "WHERE av.no_article = :no_article "
+	        + "AND (e.montant_enchere = ("
+	        + "    SELECT MAX(montant_enchere) "
+	        + "    FROM ENCHERES "
+	        + "    WHERE no_article = av.no_article"
+	        + ") OR e.montant_enchere IS NULL)";
+
+
+
+
+
+
 
 	
 
@@ -86,10 +126,21 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		return jdbcTemplate.query(FIND_ARTICLE_BY_NAME_AND_CATEGORIE, mapSqlParameterSource, new ArticleVenduRowMapper());
 	}
 
+	@Override
+	public ArticleVendu findById(int noArticle) {
+	    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+	    mapSqlParameterSource.addValue("no_article", noArticle);
 
 
+	    ArticleVendu article = jdbcTemplate.queryForObject(FIND_ARTICLE_BY_ID, mapSqlParameterSource, new ArticleVenduDetailRowMapper());
 
-	class ArticleVenduRowMapper implements RowMapper<ArticleVendu>{
+
+	    System.out.println("Article récupéré : " + article);
+
+	    return article;
+	}
+
+class ArticleVenduRowMapper implements RowMapper<ArticleVendu>{
 		
 		@Override
 		public ArticleVendu mapRow(ResultSet rs, int rowNum) throws SQLException{
@@ -115,5 +166,62 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 			return av;
 		}
 	}
+
+
+	class ArticleVenduDetailRowMapper implements RowMapper<ArticleVendu>{
+		
+		@Override
+		public ArticleVendu mapRow(ResultSet rs, int rowNum) throws SQLException{
+			ArticleVendu av = new ArticleVendu();
+	        av.setNoArticle(rs.getInt("av_no_article"));
+	        av.setNomArticle(rs.getString("av_nom_article"));
+	        av.setDescription(rs.getString("av_description"));
+	        av.setDateDebutEncheres(rs.getObject("av_date_debut_encheres", LocalDateTime.class));
+	        av.setDateFinEncheres(rs.getObject("av_date_fin_encheres", LocalDateTime.class));
+	        av.setMiseAPrix(rs.getInt("av_prix_initial"));
+
+			
+			
+			
+			Utilisateur vend = new Utilisateur();
+			vend.setNoUtilisateur(rs.getInt("u_no_utilisateur"));
+			 vend.setPseudo(rs.getString("u_pseudo_vendeur"));
+			av.setVend(vend);
+			
+			Categorie cat = new Categorie();
+			cat.setNoCategorie(rs.getInt("c_no_categorie"));
+			cat.setLibelle(rs.getString("c_libelle"));
+			av.setCategorie(cat);
+			
+			Retrait retrait =  new Retrait();
+			System.out.println("🔍 Récupération lieu de retrait...");
+			System.out.println("rue = " + rs.getString("r_rue"));
+			System.out.println("code_postal = " + rs.getString("r_code_postal"));
+			System.out.println("ville = " + rs.getString("r_ville"));
+			retrait.setRue(rs.getString("r_rue"));
+			retrait.setCodePostal(rs.getString("r_code_postal"));
+			retrait.setVille(rs.getString("r_ville"));
+			av.setLieuRetrait(retrait);
+			
+			 // Mapper l'enchère
+		    Enchere enchere = new Enchere();
+		    enchere.setMontantEnchere(rs.getInt("e_montant_enchere"));
+			
+			// Mapper l'encherisseur
+		    Utilisateur encherisseur = new Utilisateur();
+		    encherisseur.setNoUtilisateur(rs.getInt("u2_no_utilisateur"));
+		    encherisseur.setPseudo(rs.getString("u2_pseudo_encherisseur"));
+		    enchere.setEncherisseur(encherisseur);
+		    
+		    av.setEnchere(Arrays.asList(enchere));
+		    
+			return av;
+		}
+	}
+
+
+
+
+	
 	
 }

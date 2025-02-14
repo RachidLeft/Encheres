@@ -17,6 +17,8 @@ public interface ArticleVenduDAO {
 
 	List<ArticleVendu> findArticleByNameAndCategorie(int noCategorie, String nomArticle);
 	
+	public ArticleVendu findById(int noArticle);
+	
 	
 
 }

@@ -1,7 +1,10 @@
 package fr.eni.encheres.bll;
 
+
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,7 @@ import fr.eni.encheres.dal.ArticleVenduDAO;
 @Service
 public class ArticleVenduServiceImpl implements ArticleVenduService {
 	
+
 	private ArticleVenduDAO articleVenduDAO;
 		
 
@@ -47,8 +51,16 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 				
 		
 		return articleVendu;
+
+	}
+
+	
+	public ArticleVendu findById(int id) {
+		return articleVenduDAO.findById(id);
+
 	}
 
 	
 	
+
 }
