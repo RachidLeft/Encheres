@@ -43,7 +43,7 @@
 		<tbody>
 			<tr th:each="av : ${article_vendu}">
 				<td th:text="${av.nomArticle}"></td>
-				<td th:text="${av.miseAPrix}"></td>
+				<td th:text="${av.miseAPrix} + ' points'"></td>
 				<td th:text="${av.dateFinEncheres}"></td>
 				<td th:text="${av.vend.pseudo}"></td>
 			</tr>

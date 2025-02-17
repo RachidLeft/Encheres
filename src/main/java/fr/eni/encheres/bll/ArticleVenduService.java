@@ -12,7 +12,7 @@ public interface ArticleVenduService {
 	
 	List<ArticleVendu> consulterLesArticlesNomEtCategorie(String nomArticle, int idCategorie);
 	
-
+	
 
 
 

@@ -33,21 +33,24 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 
 	@Override
 	public List<ArticleVendu> consulterLesArticlesNomEtCategorie(String nomArticle, int idCategorie) {
-		
 		List<ArticleVendu> articleVendu = new ArrayList<ArticleVendu>();
+
+				
 		
-		if ((nomArticle.isBlank()) && (idCategorie != 0)) {
-			articleVendu = this.articleVenduDAO.findArticleById(idCategorie);
-		}
-		if ((!nomArticle.isBlank()) && (idCategorie == 0)) {
-			articleVendu = this.articleVenduDAO.findArticleByName("%" + nomArticle + "%");
-		}
-		if ((!nomArticle.isBlank()) && (idCategorie != 0)) {
-			articleVendu = this.articleVenduDAO.findArticleByNameAndCategorie(idCategorie, "%" + nomArticle + "%");
-		}
-		if ((nomArticle.isBlank()) && (idCategorie == 0)) {
-			articleVendu = this.articleVenduDAO.findAll();
-		}
+		
+		
+			if ((nomArticle.isBlank()) && (idCategorie != 0)) {
+				articleVendu = this.articleVenduDAO.findArticleById(idCategorie);
+			}
+			if ((!nomArticle.isBlank()) && (idCategorie == 0)) {
+				articleVendu = this.articleVenduDAO.findArticleByName("%" + nomArticle + "%");
+			}
+			if ((!nomArticle.isBlank()) && (idCategorie != 0)) {
+				articleVendu = this.articleVenduDAO.findArticleByNameAndCategorie(idCategorie, "%" + nomArticle + "%");
+			}
+			if ((nomArticle.isBlank()) && (idCategorie == 0)) {
+				articleVendu = this.articleVenduDAO.findAll();
+			}
 				
 		
 		return articleVendu;
