@@ -11,19 +11,25 @@
 
 <main class="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-8 mt-6">
     <h1 class="text-2xl font-bold text-blue-600 text-center">Nouvelle Vente</h1>
-    
+       
     <form th:action="@{/encheres/nouvellevente}" method="POST" th:object="${article}" class="space-y-6 mt-6">
+    	<div class="cards" th:if="${#fields.hasErrors('*')}">
+				<h2>Attention : Veuillez vérifier vos champs</h2>
+				<p th:each="err : ${#fields.globalErrors()}" th:text="#{${err}}"/>
+			</div>
         <ul class="space-y-4">
             <li>
                 <label for="idNomArticle" class="block text-sm font-semibold text-gray-700">Article</label>
                 <input id="idNomArticle" type="text" th:field="*{nomArticle}" 
                     class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500"/>
+                <p class="cards" th:errors="*{nomArticle}"></p>
             </li>
             
             <li>
                 <label for="idDescription" class="block text-sm font-semibold text-gray-700">Description</label>
                 <textarea id="idDescription" min="5" max="300" th:field="*{description}" 
                     class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500"></textarea>
+           		<p class="cards" th:errors="*{description}"></p>
             </li>
             
             <li>
@@ -43,36 +49,42 @@
                 <label for="idMiseAPrix" class="block text-sm font-semibold text-gray-700">Mise à prix</label>
                 <input id="idMiseAPrix" type="number" min="1" th:field="*{miseAPrix}" 
                     class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500"/>
+                <p class="cards" th:errors="*{miseAPrix}"></p>
             </li>
 
             <li>
                 <label for="idDateDebutEncheres" class="block text-sm font-semibold text-gray-700">Début de l'enchère</label>
                 <input id="idDateDebutEncheres" type="datetime-local" th:field="*{dateDebutEncheres}" 
                     class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500"/>
+                <p class="cards" th:errors="*{dateDebutEncheres}"></p>
             </li>
 
             <li>
                 <label for="idDteFinEncheres" class="block text-sm font-semibold text-gray-700">Fin de l'enchère</label>
                 <input id="idDteFinEncheres" type="datetime-local" th:field="*{dateFinEncheres}" 
                     class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500"/>
+                <p class="cards" th:errors="*{dateFinEncheres}"></p>
             </li>
 
             <li>
 			    <label for="idRue" class="block text-sm font-semibold text-gray-700">Rue</label>
 			    <input id="idRue" th:field="*{lieuRetrait.rue}" 
 			        class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500" type="text"/>
+			    <p class="cards" th:errors="*{lieuRetrait.rue}"></p>    
 			</li>
 
          	 <li>
 			    <label for="idCodepostal" class="block text-sm font-semibold text-gray-700">Code Postal</label>
 			    <input id="idCodepostal" th:field="*{lieuRetrait.codePostal}" 
 			        class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500" type="text"/>
+				<p class="cards" th:errors="*{lieuRetrait.codePostal}"></p>
 			</li>
 			
 			<li>
 			    <label for="idVille" class="block text-sm font-semibold text-gray-700">Ville</label>
 			    <input id="idVille" th:field="*{lieuRetrait.ville}" 
 			        class="mt-2 p-2 border rounded w-full shadow-sm focus:ring-2 focus:ring-blue-500" type="text"/>
+				<p class="cards" th:errors="*{lieuRetrait.ville}"></p>
 			</li>
 
             <li class="flex justify-between items-center">

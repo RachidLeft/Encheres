@@ -5,9 +5,13 @@ import java.util.List;
 
 public class BusinessException extends Exception{
 	
-	private List<String> clesErreurs = new ArrayList<String>();
+	private List<String> clesErreurs;
 	
-	public void addErreur(String cleErreur) {
+	public List<String> getClesErreurs() {
+		return clesErreurs;
+	}
+	
+	public void addCleErreur(String cleErreur) {
 		if (clesErreurs == null) {
 			clesErreurs = new ArrayList<String>();
 			
@@ -16,8 +20,6 @@ public class BusinessException extends Exception{
 	}
 
 
-	public List<String> getClesErreurs() {
-		return clesErreurs;
-	}
+	
 
 }

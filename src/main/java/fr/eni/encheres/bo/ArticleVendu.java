@@ -16,7 +16,7 @@ public class ArticleVendu {
 	@NotBlank
 	@Size(min = 3, max = 30)
 	private String nomArticle;
-	@Size(min = 3, max = 300)
+	@Size(min = 5, max = 300)
 	private String description;
 	@NotNull
 	private LocalDateTime dateDebutEncheres;
@@ -24,7 +24,6 @@ public class ArticleVendu {
 	private LocalDateTime dateFinEncheres;
 	@Min(value = 1)
 	private int miseAPrix;
-	@Min(value = 1)
     private int prixVente;
     private String etatVente;
     
