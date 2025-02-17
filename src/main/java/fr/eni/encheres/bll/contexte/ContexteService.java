@@ -1,4 +1,4 @@
-package fr.eni.encheres.bll;
+package fr.eni.encheres.bll.contexte;
 
 import fr.eni.encheres.bo.Utilisateur;
 

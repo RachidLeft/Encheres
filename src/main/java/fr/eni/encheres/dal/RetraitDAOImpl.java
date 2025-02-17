@@ -6,13 +6,15 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.bo.Retrait;
 
+@Repository
 public class RetraitDAOImpl implements RetraitDAO{
 	
-	private static final String INSERT = "INSERT INTO RETRAITS no_article, rue, code_postal, ville values :noArticle, :rue, :codePostal, :ville";
+	private static final String INSERT = "INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES (:noArticle, :rue, :codePostal, :ville)";
 	private static final String SELECT_BY_ID ="SELECT no_article, rue, code_postal, ville FROM RETRAITS WHERE no_article = :noArticle";
 	
 private NamedParameterJdbcTemplate namedParameterJdbcTemplate;

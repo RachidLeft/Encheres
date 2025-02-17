@@ -18,7 +18,7 @@
                         <a th:href="@{/enchere}" class="hover:underline">Enchères</a>
                     </li>
                     <li sec:authorize="isAuthenticated()" class="inline-block">
-                        <a th:href="@{/vendre_article}" class="hover:underline">Vendre un article</a>
+                        <a th:href="@{/encheres/nouvellevente}" class="hover:underline">Vendre un article</a>
                     </li>
              		<li sec:authorize="isAuthenticated()" class="inline-block">
                         <a th:href="@{/utilisateurs/detail/{id}(id=${utilisateurEnSession.noUtilisateur})}" class="hover:underline">Mon profil</a>

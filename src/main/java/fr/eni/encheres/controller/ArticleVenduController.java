@@ -30,6 +30,14 @@ public class ArticleVenduController {
 		this.categorieService = categorieService;
 	}
 	
+	 @GetMapping("/articleVendu/detail/{id}")
+	 public String detailArticleVendu(@PathVariable("id") int id, Model model) {
+	        System.out.println("ID passé à la méthode: " + id);
+	        ArticleVendu articleVendu = articleVenduService.findById(id);
+	        model.addAttribute("articleVendu", articleVendu);
+	        return "detailArticleVendu";
+	    }
+	
 	@GetMapping("/encheres/nouvellevente")
 	public String afficherCreationNouvelleVente(Model model, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateur ) {
 		ArticleVendu article = new ArticleVendu();
@@ -50,12 +58,20 @@ public class ArticleVenduController {
 		return "view-nouvelle-vente";
 	}
 	
-	 @GetMapping("/articleVendu/detail/{id}")
-	 public String detailArticleVendu(@PathVariable("id") int id, Model model) {
-	        System.out.println("ID passé à la méthode: " + id);
-	        ArticleVendu articleVendu = articleVenduService.findById(id);
-	        model.addAttribute("articleVendu", articleVendu);
-	        return "detailArticleVendu";
-	    }
+	
+	@PostMapping("/encheres/nouvellevente")
+	public String creerNouvelleVente(@ModelAttribute("article") ArticleVendu article, 
+									Model model,
+									@ModelAttribute("utilisateurEnSession") Utilisateur utilisateur) {
+		System.out.println("Article à vendre " + article);
+		
+			
+		article.setVend(utilisateur);
+		
+		this.articleVenduService.creerArticleAVendre(article);
+		
+		
+		return "redirect:/encheres";
+	}
 
 }

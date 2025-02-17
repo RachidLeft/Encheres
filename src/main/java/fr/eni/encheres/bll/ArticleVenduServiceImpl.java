@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.dal.ArticleVenduDAO;
 import fr.eni.encheres.dal.CategorieDAO;
+import fr.eni.encheres.dal.RetraitDAO;
 
 @Service
 public class ArticleVenduServiceImpl implements ArticleVenduService {
@@ -19,10 +20,12 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	
 	ArticleVenduDAO articleVenduDAO;
 	CategorieDAO categorieDAO;
+	RetraitDAO retraitDAO;
 	
-	public ArticleVenduServiceImpl(ArticleVenduDAO articleVenduDAO, CategorieDAO categorieDAO) {
+	public ArticleVenduServiceImpl(ArticleVenduDAO articleVenduDAO, CategorieDAO categorieDAO, RetraitDAO retraitDAO) {
 		this.articleVenduDAO = articleVenduDAO;
 		this.categorieDAO = categorieDAO;
+		this.retraitDAO = retraitDAO;
 	}
 	
 
@@ -65,7 +68,9 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 
 	@Override
 	public void creerArticleAVendre(ArticleVendu articleVendu){
-			articleVenduDAO.creerArticle(articleVendu);
+			this.articleVenduDAO.creerArticle(articleVendu);
+			this.retraitDAO.create(articleVendu);
+			
 	}
 	
 

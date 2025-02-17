@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import fr.eni.encheres.bll.ContexteService;
+import fr.eni.encheres.bll.contexte.ContexteService;
 import fr.eni.encheres.bo.Utilisateur;
 
 

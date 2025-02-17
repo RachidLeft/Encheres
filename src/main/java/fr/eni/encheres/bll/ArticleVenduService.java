@@ -16,7 +16,5 @@ public interface ArticleVenduService {
 
 	void creerArticleAVendre(ArticleVendu articleVendu);
 
-
-
 	ArticleVendu findById(int id);
 }
