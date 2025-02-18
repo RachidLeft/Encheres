@@ -24,6 +24,7 @@ public class SecurityConfig {
     			authentification
     			.requestMatchers("/login").permitAll()
     			.requestMatchers("/css/**").permitAll()
+    			.requestMatchers("/js/*").permitAll()
     			.requestMatchers("/logout").permitAll()
     			.anyRequest().permitAll();
     		});
