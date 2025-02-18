@@ -1,8 +1,6 @@
 package fr.eni.encheres.controller;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import org.springframework.stereotype.Controller;
 
@@ -34,58 +32,26 @@ public class ArticleVenduController {
 	}
 	
 	@GetMapping("/detail/{id}")
-	public String detailArticleVendu(@PathVariable("id") int id, Model model, HttpSession session) {
+	public String detailArticleVendu(@PathVariable("id") int id, Model model) {
 	    System.out.println("ID passé à la méthode: " + id);
-
 	    ArticleVendu articleVendu = articleVenduService.findById(id);
-
+	    
 	    // Création d'une enchère vide pour le formulaire
 	    Enchere enchere = new Enchere();
-
-	    // Pré-remplissage du montant de l'enchère avec la meilleure offre ou la mise à prix
-	    if (articleVendu.getEnchere() != null && !articleVendu.getEnchere().isEmpty()
+	    
+	    // Pré-remplir le montant de l'enchère avec la meilleure proposition :
+	    // On suppose que articleVendu.getEnchere() retourne une liste triée (la plus haute en première position)
+	    if (articleVendu.getEnchere() != null && !articleVendu.getEnchere().isEmpty() 
 	            && articleVendu.getEnchere().get(0).getMontantEnchere() > 0) {
 	        enchere.setMontantEnchere(articleVendu.getEnchere().get(0).getMontantEnchere());
 	    } else {
 	        enchere.setMontantEnchere(articleVendu.getMiseAPrix());
 	    }
-
-	    // 📌 Formatage de la date de fin d'enchère
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy 'à' HH'h'mm", Locale.FRENCH);
-	    String dateFinFormatee = articleVendu.getDateFinEncheres().format(formatter);
-
-	    // 📌 Ajouter la date actuelle (pour comparaison uniquement, pas pour affichage)
-	    LocalDateTime currentDate = LocalDateTime.now();
-
-	    // Comparer la date actuelle avec la date de fin de l'enchère
-	    boolean isEnchereEnCours = currentDate.isBefore(articleVendu.getDateFinEncheres());
-
-	    // Récupérer l'utilisateur connecté depuis la session
-	    Utilisateur encherisseur = (Utilisateur) session.getAttribute("utilisateurEnSession");
-
-	    // Vérifier si l'utilisateur connecté est le gagnant
-	    boolean isGagnant = false;
-	    if (articleVendu.getEnchere() != null && !articleVendu.getEnchere().isEmpty()) {
-	        Enchere meilleureEnchere = articleVendu.getEnchere().get(0);
-	        // Vérifier si l'utilisateur connecté est celui qui a fait la meilleure enchère
-	        if (encherisseur != null && meilleureEnchere.getEncherisseur().getPseudo().equals(encherisseur.getPseudo())) {
-	            isGagnant = true;
-	        }
-	    }
-
-	    // Ajouter les attributs au modèle
+	    
 	    model.addAttribute("articleVendu", articleVendu);
 	    model.addAttribute("enchere", enchere);
-	    model.addAttribute("dateFinFormatee", dateFinFormatee);
-	    model.addAttribute("isEnchereEnCours", isEnchereEnCours);
-	    model.addAttribute("isGagnant", isGagnant);  // Indiquer si l'utilisateur connecté est le gagnant
-
 	    return "detailArticleVendu";
 	}
-
-
-
-
 
 	@PostMapping("/detail/{id}")
 	public String ajouterEnchere(@PathVariable("id") int id,
