@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import fr.eni.encheres.bo.Utilisateur;
@@ -24,8 +25,9 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
 
     
     private static final String FIND_BY_PSEUDO = "select no_utilisateur, pseudo, nom, prenom, email, telephone, rue, code_postal, ville,mot_de_passe, credit, administrateur from utilisateurs where pseudo = ?";
-
-
+    private static final String COUNT_BY_MAIL= "SELECT count(*) FROM UTILISATEURS WHERE email = ?";
+    private static final String COUNT_BY_PSEUDO ="SELECT count(*) FROM UTILISATEURS WHERE pseudo = ?";
+    
     @Override
     public void ajouter(Utilisateur utilisateur) {
         String sql = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur) " +
@@ -90,9 +92,20 @@ System.out.println("je suis la");
 		return jdbcTemplate.queryForObject(FIND_BY_PSEUDO, new UtilisateurRowMapper(), pseudo);
 	}
 
+	@Override
+	public int countByEmail(String email) {
+		 
+        return jdbcTemplate.queryForObject(COUNT_BY_MAIL, Integer.class, email);
 
+	}
 
-
+	@Override
+	public int countByPseudo(String pseudo) {
+		
+		return jdbcTemplate.queryForObject(COUNT_BY_PSEUDO, Integer.class, pseudo);
+		
+	}
+	
     class UtilisateurRowMapper implements RowMapper<Utilisateur> {
 
         @Override
@@ -113,4 +126,12 @@ System.out.println("je suis la");
             return utilisateur;
         }
     }
+
+
+	
+
+
+
+
+
 }

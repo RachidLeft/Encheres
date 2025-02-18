@@ -2,6 +2,7 @@ package fr.eni.encheres.controller;
 
 import fr.eni.encheres.bll.UtilisateurService;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.exception.BusinessException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -36,20 +38,29 @@ public class UtilisateurController {
                                      BindingResult resultat, // 🔴 Doit être immédiatement après @Valid !
                                      @RequestParam("confirmMotDePasse") String confirmMotDePasse) {
 
-        // Vérification des erreurs de validation (champs obligatoires)
-        if (resultat.hasErrors()) {
-            return "form-ajout-utilisateur"; 
-        }
-
+ 
         // Vérification de la confirmation du mot de passe
         if (!utilisateur.getMotDePasse().equals(confirmMotDePasse)) {
             resultat.rejectValue("motDePasse", "error.motDePasse", "Les mots de passe ne correspondent pas.");
             return "form-ajout-utilisateur"; 
         }
 
-        // Enregistrement de l'utilisateur
-        utilisateurService.ajouter(utilisateur);  
-        return "redirect:/";
+        if (!resultat.hasErrors()) {
+        	try {
+    			utilisateurService.ajouter(utilisateur);
+    			return "redirect:/";
+    		} catch (BusinessException e) {
+    			e.printStackTrace();
+    			e.getClesErreurs().forEach(cle->{
+					ObjectError error = new ObjectError("globalError", cle);
+					resultat.addError(error);
+				});
+    			return "form-ajout-utilisateur";
+    		}
+        }else {
+			return "form-ajout-utilisateur";
+		  }
+     
     }
 
 

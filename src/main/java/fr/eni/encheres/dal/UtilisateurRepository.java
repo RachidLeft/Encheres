@@ -8,7 +8,6 @@ public interface UtilisateurRepository {
 
     public void ajouter(Utilisateur utilisateur);
 
-
     public List<Utilisateur> findAll();
 
     public Utilisateur findById(int id);
@@ -18,5 +17,9 @@ public interface UtilisateurRepository {
     public void deleteById(int id);
     
     Utilisateur read(String pseudo);
+    
+    int countByEmail(String email);
+    
+    int countByPseudo(String pseudo);
 
 }
