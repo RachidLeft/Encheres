@@ -12,6 +12,8 @@ public interface EnchereService {
 	
 	ArticleVendu consulterArticleParId (int noArticle);
 	
+	void ajouter(Enchere enchere);
+	
 	
 
 

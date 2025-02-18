@@ -20,20 +20,61 @@
                    th:href="@{'/utilisateurs/detail/' + ${articleVendu.enchere[0].encherisseur.noUtilisateur}}"
                    th:text="${articleVendu.enchere[0].encherisseur.pseudo}"></a>
             </span>
-            <span th:if="${articleVendu.enchere == null or articleVendu.enchere[0].montantEnchere == 0}">
-                Aucune enchère
-            </span>
+            <span th:if="${articleVendu.enchere == null or articleVendu.enchere[0].montantEnchere == 0}">Aucune enchère</span>
         </p>
         <p><span class="font-semibold">Mise à prix :</span> <span th:text="${articleVendu.miseAPrix} + ' points'"></span></p>
-        <p><span class="font-semibold">Fin de l'enchère :</span> <span th:text="${articleVendu.dateFinEncheres}"></span></p>
-        <p><span class="font-semibold">Retrait :</span> <span th:text="${articleVendu.lieuRetrait.rue} + ' ' + ${articleVendu.lieuRetrait.codePostal} + ' ' + ${articleVendu.lieuRetrait.ville}"></span></p>
         
+        <!-- Date de fin de l'enchère formatée -->
+        <p><span class="font-semibold">Fin de l'enchère :</span> <span th:text="${dateFinFormatee}"></span></p>
+
+        <p><span class="font-semibold">Retrait :</span> <span th:text="${articleVendu.lieuRetrait.rue} + ' ' + ${articleVendu.lieuRetrait.codePostal} + ' ' + ${articleVendu.lieuRetrait.ville}"></span></p>
+
         <!-- Lien vers le vendeur -->
         <p><span class="font-semibold">Vendeur :</span>
             <a class="text-blue-500 hover:underline"
                th:href="@{'/utilisateurs/detail/' + ${articleVendu.vend.noUtilisateur}}"
                th:text="${articleVendu.vend.pseudo}"></a>
         </p>
+        
+        <!-- Si l'utilisateur est le gagnant -->
+        <div th:if="${isGagnant}" class="mt-6 p-6 border-t bg-green-100">
+            <p class="text-green-600 font-semibold">Vous avez remporté la vente ! Félicitations !</p>
+        </div>
+
+        <!-- Formulaire d'enchère (seulement si l'enchère est en cours) -->
+        <div th:if="${isEnchereEnCours}" class="mt-6 p-6 border-t">
+            <form th:action="@{/articleVendu/detail/{id}(id=${articleVendu.noArticle})}" method="post" th:object="${enchere}">
+                <div class="mb-4">
+                    <label for="montant" class="block text-gray-700 font-medium">Ma proposition :</label>
+                    <input type="number" id="montant" th:field="*{montantEnchere}" min="*{montantEnchere}" required
+                           class="mt-2 p-2 w-full border rounded-lg">
+                </div>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                    Enchérir
+                </button>
+            </form>
+        </div>
+
+        <!-- Si l'enchère est terminée -->
+<div th:if="${not isEnchereEnCours}" class="mt-6 p-6 border-t">
+    <p>Enchère terminée</p>
+    
+    <!-- Si l'utilisateur n'est pas le gagnant -->
+    <div th:if="${articleVendu.enchere != null and not isGagnant}">
+        <p>Le gagnant est : <span th:text="${articleVendu.enchere[0].encherisseur.pseudo}"></span></p>
+        <p>Montant final : <span th:text="${articleVendu.enchere[0].montantEnchere}"></span> pts</p>
+    </div>
+    
+    <!-- Si l'utilisateur est le gagnant -->
+    <div th:if="${isGagnant}">
+        <p>Montant final : <span th:text="${articleVendu.enchere[0].montantEnchere}"></span> pts</p>
+    </div>
+    
+    <div th:if="${articleVendu.enchere == null}">
+        <p>Aucune enchère n'a été réalisée pour cet article.</p>
+    </div>
+</div>
+
     </div>
 </div>
 </body>
