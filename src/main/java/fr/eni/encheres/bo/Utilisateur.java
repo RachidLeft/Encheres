@@ -6,6 +6,10 @@ import java.util.List;
 public class Utilisateur {
 	// Attributs
 	private int noUtilisateur;
+	
+	@Size(min = 2, max = 30, message = "Le prénom doit faire entre 2 et 30 caractères")
+    @NotBlank(message = "Le pseudo est obligatoire")
+    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "Le pseudo doit contenir uniquement des caractères alphanumériques")
 	private String pseudo;
 
 	@Size(min = 2, max = 50, message = "Le nom doit faire entre 2 et 50 caractères")
