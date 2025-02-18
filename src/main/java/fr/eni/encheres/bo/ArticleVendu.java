@@ -13,24 +13,25 @@ public class ArticleVendu {
 	
 	
 	private int noArticle;
-	@NotBlank
-	@Size(min = 3, max = 30)
+	@NotBlank(message="Le nom de l'article ne peut pas être vide.")
+	@Size(min = 3, max = 30, message ="Le nom de l'article doit comporter entre 3 et 30 caractères.")
 	private String nomArticle;
-	@Size(min = 5, max = 300)
+	@Size(min = 5, max = 300, message ="La description doit comporter entre 5 et 300 caractères.")
 	private String description;
-	@NotNull
+	@NotNull(message="La date de début des enchères est obligatoire")
 	private LocalDateTime dateDebutEncheres;
-	@NotNull
+	@NotNull(message="La date de fin des enchères est obligatoire.")
 	private LocalDateTime dateFinEncheres;
-	@Min(value = 1)
+	@Min(value = 1, message ="Le prix de mise à prix doit être supérieur ou égal à 1.")
 	private int miseAPrix;
     private int prixVente;
     private String etatVente;
     
-    @NotNull
+    @NotNull(message="La catégorie est obligatoire.")
     private Categorie categorie;
     private Utilisateur vend;
     private Utilisateur achete;
+   
     private Retrait lieuRetrait;
     private List<Enchere> enchere;
     

@@ -73,11 +73,7 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	public void creerArticleAVendre(ArticleVendu articleVendu) throws BusinessException{
 	BusinessException be = new BusinessException();
 	
-		boolean valide = validerNomArticle(articleVendu.getNomArticle(), be);
-				valide &= validerCategorie(articleVendu.getCategorie(), be);
-				valide &= validerDescriptionArticle(articleVendu.getDescription(), be);
-				valide &= validerPrixVenteArticle(articleVendu.getMiseAPrix(), be);
-				valide &= validerDateDebutEnchereArticle(articleVendu.getDateDebutEncheres(), be);
+		boolean valide = validerDateDebutEnchereArticle(articleVendu.getDateDebutEncheres(), be);
 				valide &= validerDateFinEnchereArticle(articleVendu.getDateFinEncheres(), be);
 		
 		if (valide) {
@@ -89,62 +85,6 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	}
 	
 	//Validation pour créer un Article
-	
-		private boolean validerNomArticle(String nom, BusinessException be) {
-			boolean valide = true;
-			
-			if (nom == null || nom.isBlank()) {
-				be.addCleErreur("validation.articleVendu.nomArticle.Blank");
-				valide = false;
-			}
-			
-			if (nom.length()< 3 || nom.length() > 30) {
-				be.addCleErreur("validation.articleVendu.nomArticle.length");
-				valide = false;
-			}
-			
-			return valide;
-		}
-		
-		private boolean validerDescriptionArticle(String description, BusinessException be) {
-			boolean valide = true;
-			
-			if (description == null || description.isBlank()) {
-				be.addCleErreur("validation.articleVendu.description.Blank");
-				valide = false;
-			}
-			
-			if (description.length()< 5 || description.length() > 300) {
-				be.addCleErreur("validation.articleVendu.description.length");
-				valide = false;
-			}
-			
-			return valide;
-		}
-		
-		private boolean validerCategorie(Categorie categorie, BusinessException be) {
-			Categorie categorieTrouve = this.categorieDAO.read(categorie.getNoCategorie());
-			boolean valide = true;
-			
-			if(categorieTrouve == null) {
-				valide = false;
-				be.addCleErreur("validation.articleVendu.categorie.noCategorie");
-			}
-			
-			return valide;
-		}
-		
-		private boolean validerPrixVenteArticle(int miseAPrix, BusinessException be) {
-			boolean valide = true;
-			
-			
-			if (miseAPrix < 1) {
-				be.addCleErreur("validation.articleVendu.miseAPrix");
-				valide = false;
-			}
-			 
-			 return valide;
-		}
 		
 		private boolean validerDateDebutEnchereArticle(LocalDateTime dateDebutEncheres, BusinessException be) {
 			boolean valide = true;

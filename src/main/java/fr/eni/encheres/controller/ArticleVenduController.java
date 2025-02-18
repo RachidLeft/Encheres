@@ -64,37 +64,33 @@ public class ArticleVenduController {
 	
 	
 	@PostMapping("/encheres/nouvellevente")
-	public String creerNouvelleVente(@Valid @ModelAttribute("article") ArticleVendu article, 
+	public String creerNouvelleVente(@Valid @ModelAttribute("article") ArticleVendu articleVendu, 
 									BindingResult bindingResult,
 									Model model,
 									@ModelAttribute("utilisateurEnSession") Utilisateur utilisateur) {
-		System.out.println("Article à vendre " + article);
+		System.out.println("Article à vendre " + articleVendu);
 		
-		if (bindingResult.hasErrors()) {
-			List<Categorie> categories = categorieService.findAll();
-			model.addAttribute("categories",categories);
-			return "view-nouvelle-vente";
-		} else {			
-			try {
-				article.setVend(utilisateur);
-				this.articleVenduService.creerArticleAVendre(article);
-				return "redirect:/encheres";
-			} catch (BusinessException e) {
-				e.printStackTrace();
-				e.getClesErreurs().forEach(cle -> {
-					ObjectError error = new ObjectError("globalError", cle);
-					bindingResult.addError(error);
-				});
-				List<Categorie> categories = categorieService.findAll();
-				model.addAttribute("categories",categories);
-				return "view-nouvelle-vente";
-			}
-			
-		}
+		 if (!bindingResult.hasErrors()) {
+		        try {
+		            articleVendu.setVend(utilisateur);
+		            this.articleVenduService.creerArticleAVendre(articleVendu);
+		            return "redirect:/encheres";
+		        } catch (BusinessException e) {
+		            e.printStackTrace();
+		            e.getClesErreurs().forEach(cle -> {
+		                ObjectError error = new ObjectError("globalError", cle);
+		                bindingResult.addError(error);
+		            });
+		            List<Categorie> categories = categorieService.findAll();
+		            model.addAttribute("categories", categories);
+		            return "view-nouvelle-vente";
+		        }
+		    } else {
+		        List<Categorie> categories = categorieService.findAll();
+		        model.addAttribute("categories", categories);
+		        return "view-nouvelle-vente";
+		    }
 		
-	
-	
-	
 	}	
 }
 	
