@@ -89,7 +89,6 @@ public class ArticleVenduController {
 	    // Vérifier si des enchères existent pour cet article
 	    Enchere encherePlusHaute = null;
 	    if (articleVendu.getEnchere() != null && !articleVendu.getEnchere().isEmpty()) {
-	        // Si des enchères existent, récupérer la première, supposée être la plus haute
 	        encherePlusHaute = articleVendu.getEnchere().get(0);
 	    }
 	 // Vérification du montant de l'enchère
