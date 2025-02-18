@@ -43,21 +43,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     	utilisateurRepository.deleteById(id);
     }
     
-    public void mettreAJourCredits(Utilisateur encherisseur, int montantEnchere, ArticleVendu articleVendu) {
-        // Réduire les crédits de l'encherisseur actuel
-        encherisseur.setCredit(encherisseur.getCredit() - montantEnchere);
-        
-        utilisateurRepository.update(encherisseur);  // Assurez-vous que vous avez une méthode pour mettre à jour l'utilisateur
-        
-        // Vérifier s'il y avait déjà une enchère précédente
-        if (!articleVendu.getEnchere().isEmpty()) {
-            Enchere ancienneEnchere = articleVendu.getEnchere().get(0);  // La plus haute enchère
-            Utilisateur ancienEncherisseur = ancienneEnchere.getEncherisseur();
-            
-            // Ajouter les crédits à l'ancien enchérisseur
-            ancienEncherisseur.setCredit(ancienEncherisseur.getCredit() + ancienneEnchere.getMontantEnchere());
-            utilisateurRepository.update(ancienEncherisseur);
-        }
-    }
+   
 
 }

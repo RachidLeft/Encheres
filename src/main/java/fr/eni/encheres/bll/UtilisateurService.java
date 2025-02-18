@@ -17,6 +17,5 @@ public interface UtilisateurService {
 
     void deleteById(int id);
 
-    // Déclaration de la méthode pour mettre à jour les crédits
-    void mettreAJourCredits(Utilisateur encherisseur, int montantEnchere, ArticleVendu articleVendu);
+  
 }
