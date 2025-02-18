@@ -36,19 +36,28 @@
             <p th:text="${errorMessage}"></p>
         </div>
         
-        <!-- Formulaire d'enchère -->
-        <div class="mt-6 p-6 border-t">
-            <form th:action="@{/articleVendu/detail/{id}(id=${articleVendu.noArticle})}" method="post" th:object="${enchere}">
-                <div class="mb-4">
-                    <label for="montant" class="block text-gray-700 font-medium">Ma proposition :</label>
-                    <input type="number" id="montant" th:field="*{montantEnchere}" min="*{montantEnchere}" required
-                           class="mt-2 p-2 w-full border rounded-lg">
-                </div>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                    Enchérir
-                </button>
-            </form>
+      <!-- Affichage du gagnant si l'enchère est terminée -->
+<div th:if="${isEnchereEnCours != null and !isEnchereEnCours}" class="mt-4 p-4 bg-green-100 text-green-700 rounded">
+    <p th:if="${isGagnant}">🎉 Vous avez remporté l'enchère ! Félicitations !</p>
+    <p th:if="${not isGagnant}">
+        🏆 <span th:text="${articleVendu.enchere[0].encherisseur.pseudo}"></span> a remporté la vente !
+    </p>
+</div>
+
+<!-- Formulaire d'enchère (uniquement si l'enchère est en cours) -->
+<div class="mt-6 p-6 border-t" th:if="${isEnchereEnCours}">
+    <form th:action="@{/articleVendu/detail/{id}(id=${articleVendu.noArticle})}" method="post" th:object="${enchere}">
+        <div class="mb-4">
+            <label for="montant" class="block text-gray-700 font-medium">Ma proposition :</label>
+            <input type="number" id="montant" th:field="*{montantEnchere}" min="*{montantEnchere}" required
+                   class="mt-2 p-2 w-full border rounded-lg">
         </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            Enchérir
+        </button>
+    </form>
+</div>
+
     </div>
 </div>
 </body>

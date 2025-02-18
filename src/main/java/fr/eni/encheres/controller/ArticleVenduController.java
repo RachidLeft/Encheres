@@ -2,24 +2,14 @@
 package fr.eni.encheres.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-
+import java.util.Locale;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.*;
-
-
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
-
-
 import fr.eni.encheres.bll.ArticleVenduService;
 import fr.eni.encheres.bll.CategorieService;
 import fr.eni.encheres.bll.EnchereService;
@@ -29,9 +19,7 @@ import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Retrait;
 import fr.eni.encheres.bo.Utilisateur;
-
 import jakarta.servlet.http.HttpSession;
-
 import fr.eni.encheres.exception.BusinessException;
 import jakarta.validation.Valid;
 
@@ -55,8 +43,7 @@ public class ArticleVenduController {
 	
 
 	@GetMapping("/articleVendu/detail/{id}")
-	public String detailArticleVendu(@PathVariable("id") int id, Model model) {
-	    System.out.println("ID passé à la méthode: " + id);
+	public String detailArticleVendu(@PathVariable("id") int id, Model model,HttpSession session) {
 	    ArticleVendu articleVendu = articleVenduService.findById(id);
 	    
 	    // Création d'une enchère vide pour le formulaire
@@ -71,8 +58,45 @@ public class ArticleVenduController {
 	        enchere.setMontantEnchere(articleVendu.getMiseAPrix());
 	    }
 	    
+	    // 📌 Formatage de la date de fin d'enchère
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy 'à' HH'h'mm", Locale.FRENCH);
+	    String dateFinFormatee = articleVendu.getDateFinEncheres().format(formatter);
+
+	    // 📌 Ajouter la date actuelle
+	    LocalDateTime currentDate = LocalDateTime.now();
+	    
+	    // Comparer la date actuelle avec la date de fin de l'enchère
+	    boolean isEnchereEnCours = currentDate.isBefore(articleVendu.getDateFinEncheres());
+	    System.out.println("EN COURS                 :"+isEnchereEnCours);
+	    
+	    // Récupérer l'utilisateur connecté depuis la session
+	    Utilisateur encherisseur = (Utilisateur) session.getAttribute("utilisateurEnSession");
+
+	 // Vérifier si l'utilisateur connecté est le gagnant
+	    boolean isGagnant = false;
+
+	    if (articleVendu.getEnchere() != null && !articleVendu.getEnchere().isEmpty()) {
+	        Enchere meilleureEnchere = articleVendu.getEnchere().get(0);
+
+	        // Vérifier que meilleureEnchere et son enchérisseur ne sont pas null avant d'accéder à getPseudo()
+	        if (meilleureEnchere != null && 
+	            meilleureEnchere.getEncherisseur() != null && 
+	            meilleureEnchere.getEncherisseur().getPseudo() != null &&
+	            encherisseur != null &&
+	            encherisseur.getPseudo() != null &&
+	            meilleureEnchere.getEncherisseur().getPseudo().equals(encherisseur.getPseudo())) {
+	            
+	            isGagnant = true;
+	        }
+	    }
+	    // Ajouter les attributs au modèle
 	    model.addAttribute("articleVendu", articleVendu);
 	    model.addAttribute("enchere", enchere);
+	    model.addAttribute("dateFinFormatee", dateFinFormatee);
+	    model.addAttribute("isEnchereEnCours", isEnchereEnCours);
+	    model.addAttribute("isGagnant", isGagnant);
+
+
 	    return "detailArticleVendu";
 	}
 
@@ -94,6 +118,8 @@ public class ArticleVenduController {
 	 // Vérification du montant de l'enchère
 	    int enchereMin = (encherePlusHaute != null) ? encherePlusHaute.getMontantEnchere() + 1 : articleVendu.getMiseAPrix();
 	    if (enchere.getMontantEnchere() < enchereMin) {
+	    	 boolean isEnchereEnCours = LocalDateTime.now().isBefore(articleVendu.getDateFinEncheres());
+	    	    model.addAttribute("isEnchereEnCours", isEnchereEnCours);
 	        model.addAttribute("errorMessage", "Votre enchère doit être supérieure à l'enchère actuelle.");
 	        model.addAttribute("articleVendu", articleVendu);
 	        model.addAttribute("enchere", enchere);
@@ -104,8 +130,6 @@ public class ArticleVenduController {
 	    Utilisateur ancienEncherisseur = new Utilisateur();
 	    if (encherePlusHaute != null) {
 	        ancienEncherisseur = encherePlusHaute.getEncherisseur();
-	        System.out.println("ENCHERE HAUTE    " + encherePlusHaute.getMontantEnchere());
-	        System.out.println("ANCIEN ENCHERISSEUR    " + ancienEncherisseur.getNoUtilisateur());
 	    }
 	
 	    // Récupérer l'utilisateur connecté en session
@@ -114,6 +138,8 @@ public class ArticleVenduController {
 
 	    // Vérifier si l'utilisateur a assez de crédits
 	    if (encherisseur.getCredit() < enchere.getMontantEnchere()) {
+	    	 boolean isEnchereEnCours = LocalDateTime.now().isBefore(articleVendu.getDateFinEncheres());
+	    	    model.addAttribute("isEnchereEnCours", isEnchereEnCours);
 	        // Crédit insuffisant
 	        model.addAttribute("errorMessage", "Crédit insuffisant pour placer cette enchère.");
 	        
@@ -139,13 +165,11 @@ public class ArticleVenduController {
 	    
 	    // Mise à jour du crédit de l'ancien enchérisseur (si applicable)
 	    if ( encherePlusHaute.getMontantEnchere() != 0) {
-	    	System.out.println("ANCIEN ENCHERISSEUR AVANT UPDATE++++++++++++++++++++ " + ancienEncherisseur.getNoUtilisateur());
 	        Utilisateur ancien = utilisateurService.findById(ancienEncherisseur.getNoUtilisateur());
 	        
 	        if (ancien != null) {
 	            int ancienCredit = ancien.getCredit() + encherePlusHaute.getMontantEnchere();
 	            ancien.setCredit(ancienCredit);
-	            System.out.println("ANCIEN ENCHERISSEUR AVANT UPDATE " + ancien);
 	            utilisateurService.update(ancien);
 	        }
 	    }

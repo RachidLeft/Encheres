@@ -15,7 +15,7 @@
                         <a th:href="@{/login}" class="hover:underline">S'inscrire - Se connecter</a>
                     </li>
                     <li sec:authorize="isAuthenticated()" class="inline-block">
-                        <a th:href="@{/enchere}" class="hover:underline">Enchères</a>
+                        <a th:href="@{/encheres}" class="hover:underline">Enchères</a>
                     </li>
                     <li sec:authorize="isAuthenticated()" class="inline-block">
                         <a th:href="@{/encheres/nouvellevente}" class="hover:underline">Vendre un article</a>
