@@ -19,4 +19,14 @@ public interface ArticleVenduService {
 
 
 	ArticleVendu findById(int id);
+
+
+
+
+	static void update(ArticleVendu articleVendu) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
+

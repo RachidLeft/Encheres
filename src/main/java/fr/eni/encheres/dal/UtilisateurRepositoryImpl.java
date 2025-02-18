@@ -72,7 +72,6 @@ System.out.println("je suis la");
             utilisateur.getRue(),
             utilisateur.getCodePostal(),
             utilisateur.getVille(),
-            utilisateur.getMotDePasse(),
             utilisateur.getCredit(),
             utilisateur.isAdministrateur(),
             utilisateur.getNoUtilisateur()

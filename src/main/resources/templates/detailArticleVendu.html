@@ -20,20 +20,35 @@
                    th:href="@{'/utilisateurs/detail/' + ${articleVendu.enchere[0].encherisseur.noUtilisateur}}"
                    th:text="${articleVendu.enchere[0].encherisseur.pseudo}"></a>
             </span>
-            <span th:if="${articleVendu.enchere == null or articleVendu.enchere[0].montantEnchere == 0}">
-                Aucune enchère
-            </span>
+            <span th:if="${articleVendu.enchere == null or articleVendu.enchere[0].montantEnchere == 0}">Aucune enchère</span>
         </p>
         <p><span class="font-semibold">Mise à prix :</span> <span th:text="${articleVendu.miseAPrix} + ' points'"></span></p>
-        <p><span class="font-semibold">Fin de l'enchère :</span> <span th:text="${articleVendu.dateFinEncheres}"></span></p>
+        <p><span class="font-semibold">Fin de l'enchère :</span> <span th:text="${dateFinFormatee}"></span></p>
         <p><span class="font-semibold">Retrait :</span> <span th:text="${articleVendu.lieuRetrait.rue} + ' ' + ${articleVendu.lieuRetrait.codePostal} + ' ' + ${articleVendu.lieuRetrait.ville}"></span></p>
-        
-        <!-- Lien vers le vendeur -->
+<!-- Lien vers le vendeur -->
         <p><span class="font-semibold">Vendeur :</span>
             <a class="text-blue-500 hover:underline"
                th:href="@{'/utilisateurs/detail/' + ${articleVendu.vend.noUtilisateur}}"
                th:text="${articleVendu.vend.pseudo}"></a>
         </p>
+        <!-- Message d'erreur si le crédit est insuffisant -->
+        <div th:if="${errorMessage}" class="mt-4 p-2 bg-red-100 text-red-700 rounded">
+            <p th:text="${errorMessage}"></p>
+        </div>
+        
+        <!-- Formulaire d'enchère -->
+        <div class="mt-6 p-6 border-t">
+            <form th:action="@{/articleVendu/detail/{id}(id=${articleVendu.noArticle})}" method="post" th:object="${enchere}">
+                <div class="mb-4">
+                    <label for="montant" class="block text-gray-700 font-medium">Ma proposition :</label>
+                    <input type="number" id="montant" th:field="*{montantEnchere}" min="*{montantEnchere}" required
+                           class="mt-2 p-2 w-full border rounded-lg">
+                </div>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                    Enchérir
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 </body>
