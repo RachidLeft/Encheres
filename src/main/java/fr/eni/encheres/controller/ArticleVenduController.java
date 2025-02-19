@@ -213,7 +213,6 @@ public class ArticleVenduController {
 									BindingResult bindingResult,
 									Model model,
 									@ModelAttribute("utilisateurEnSession") Utilisateur utilisateur) {
-		System.out.println("Article à vendre " + articleVendu);
 		
 		 if (!bindingResult.hasErrors()) {
 		        try {

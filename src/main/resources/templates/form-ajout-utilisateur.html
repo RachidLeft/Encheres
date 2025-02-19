@@ -8,9 +8,17 @@
 <body class="bg-gray-100 p-6">
 <div th:insert="~{fragments/fragment-entete :: entete}"></div>
 <div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-8">
-    <h1 class="text-3xl font-bold mb-6 text-blue-600">Ajout Utilisateur</h1>
+    <h1 class="text-3xl font-bold mb-6 text-blue-600">Mon profil</h1>
 
     <form th:action="@{/utilisateurs/ajout}" method="post" th:object="${utilisateur}" class="space-y-4">
+    	
+    	<div class="cards" th:if="${#fields.hasErrors('*')}">
+		  <h2>Attention : Veuillez vérifier vos champs</h2>
+		  <!-- Affichage des Exceptions Métiers -->
+			<p th:each="err : ${#fields.globalErrors()}" th:text="#{${err}}"/>
+	
+		</div>
+    	
         <div class="flex flex-col">
             <label for="pseudo" class="text-lg font-semibold mb-2">Pseudo :</label>
             <input type="text" th:field="*{pseudo}" id="pseudo" class="border rounded-lg p-2">

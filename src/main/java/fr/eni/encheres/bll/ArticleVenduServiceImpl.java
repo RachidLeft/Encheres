@@ -77,7 +77,7 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	BusinessException be = new BusinessException();
 	
 		boolean valide = validerDateDebutEnchereArticle(articleVendu.getDateDebutEncheres(), be);
-				valide &= validerDateFinEnchereArticle(articleVendu.getDateFinEncheres(), be);
+				valide &= validerDateFinEnchereArticle(articleVendu.getDateDebutEncheres(),articleVendu.getDateFinEncheres(), be);
 		
 		if (valide) {
 			this.articleVenduDAO.creerArticle(articleVendu);
@@ -100,7 +100,7 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 			return valide;
 		}
 		
-		private boolean validerDateFinEnchereArticle (LocalDateTime dateFinEncheres, BusinessException be) {
+		private boolean validerDateFinEnchereArticle (LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres, BusinessException be) {
 			boolean valide = true;
 			
 			if (dateFinEncheres.isBefore(LocalDateTime.now())) {
@@ -108,8 +108,13 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	            valide = false;
 			}
 			
+			if (dateFinEncheres.isEqual(dateDebutEncheres) || dateFinEncheres.isBefore(dateDebutEncheres)) {
+		        be.addCleErreur("validation.articleVendu.dateFinAvantDebut");
+		        valide = false;
+		    }
+
+			
 			return valide;
 		}
-		
-
+				
 }

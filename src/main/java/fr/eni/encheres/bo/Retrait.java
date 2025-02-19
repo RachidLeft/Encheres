@@ -6,14 +6,14 @@ import jakarta.validation.constraints.Size;
 
 public class Retrait {
 	
-	@NotBlank
-	@Size(max = 30)
+	@NotBlank(message = "La rue ne peut pas être vide.")
+	@Size(max = 30, message="La rue ne doit pas dépasser 30 caractères.")
 	private String rue;
-	@NotBlank
-	@Pattern(regexp = "\\d{5}")
+	@NotBlank(message="Le code postal ne peut pas être vide.")
+	@Pattern(regexp = "\\d{5}", message ="Le code postal doit contenir exactement 5 chiffres.")
 	private String codePostal;
-	@NotBlank
-	@Size(max = 30)
+	@NotBlank(message="La ville ne peut pas être vide.")
+	@Size(max = 30, message ="La ville ne doit pas dépasser {30} caractères.")
 	private String ville;
 	
 	private ArticleVendu article;

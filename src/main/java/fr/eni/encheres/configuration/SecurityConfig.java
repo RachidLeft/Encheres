@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -20,13 +21,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    		http.authorizeHttpRequests(authentification -> {
-    			authentification
+    		http.authorizeHttpRequests(auth -> {
+    			auth
     			.requestMatchers("/login").permitAll()
     			.requestMatchers("/css/**").permitAll()
     			.requestMatchers("/js/*").permitAll()
-    			.requestMatchers("/logout").permitAll()
-    			.anyRequest().permitAll();
+    			.requestMatchers("/logout").permitAll();
+    			
+    			// Accès à la page vendre un article
+    			auth.requestMatchers(HttpMethod.GET,"/encheres/nouvellevente").hasAnyRole("USER", "ADMIN")
+				.requestMatchers(HttpMethod.POST,"/encheres/nouvellevente").hasAnyRole("USER", "ADMIN");
+    			
+    			auth.anyRequest().permitAll();
     		});
     		http.formLogin(form -> {
     			form.usernameParameter("pseudo")
