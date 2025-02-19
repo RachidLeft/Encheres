@@ -37,7 +37,9 @@ public class Utilisateur {
 	@NotBlank(message = "La ville est obligatoire")
 	private String ville;
 
-
+	@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", 
+	         message = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial")
+	@NotBlank(message = "Le mot de passe est obligatoire")
 	private String motDePasse;
 
 

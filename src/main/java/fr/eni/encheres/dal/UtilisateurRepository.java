@@ -19,4 +19,7 @@ public interface UtilisateurRepository {
     
     Utilisateur read(String pseudo);
 
+
+	void updateMdp(Utilisateur utilisateur);
+
 }

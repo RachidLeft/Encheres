@@ -10,7 +10,7 @@
 <div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-8">
     <h1 class="text-3xl font-bold mb-6 text-blue-600">Détails de l'utilisateur</h1>
     <div class="space-y-4">
-    <p><span class="font-semibold">Pseudo :</span> <span th:text="${utilisateur.pseudo}"></span></p>
+        <p><span class="font-semibold">Pseudo :</span> <span th:text="${utilisateur.pseudo}"></span></p>
         <p><span class="font-semibold">Nom :</span> <span th:text="${utilisateur.nom}"></span></p>
         <p><span class="font-semibold">Prénom :</span> <span th:text="${utilisateur.prenom}"></span></p>
         <p><span class="font-semibold">Téléphone :</span> <span th:text="${utilisateur.telephone}"></span></p>
@@ -19,15 +19,25 @@
         <p><span class="font-semibold">Code Postal :</span> <span th:text="${utilisateur.codePostal}"></span></p>
         <p><span class="font-semibold">Ville :</span> <span th:text="${utilisateur.ville}"></span></p>
     </div>
-    <form th:action="@{/utilisateurs/delete/{id}(id=${utilisateur.noUtilisateur})}" method="get" class="inline-block mt-6">
+
+<!-- Boutons Modifier, Supprimer et Modifier mot de passe uniquement si l'utilisateur affiché est l'utilisateur en session -->
+<div th:if="${utilisateurEnSession != null and utilisateurEnSession.noUtilisateur == utilisateur.noUtilisateur}" class="mt-6 flex space-x-4">
+    <form th:action="@{/utilisateurs/delete/{id}(id=${utilisateur.noUtilisateur})}" method="get">
         <input type="hidden" name="_method" value="delete"/>
         <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
             Supprimer l'utilisateur
         </button>
     </form>
-    <a th:href="@{/utilisateurs/modif/{id}(id=${utilisateur.noUtilisateur})}" class="inline-block mt-6 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+
+    <a th:href="@{/utilisateurs/modif/{id}(id=${utilisateur.noUtilisateur})}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
         Modifier l'utilisateur
     </a>
+
+    <a th:href="@{/utilisateurs/modif-mdp/{id}(id=${utilisateur.noUtilisateur})}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+        Modifier mot de passe
+    </a>
+</div>
+
 </div>
 </body>
 </html>

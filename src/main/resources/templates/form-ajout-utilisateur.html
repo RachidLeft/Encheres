@@ -51,15 +51,22 @@
             <input type="text" th:field="*{ville}" id="ville" class="border rounded-lg p-2">
             <div th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}" class="text-red-600"></div>
         </div>
-         <div class="flex flex-col">
+        <div class="flex flex-col">
             <label for="motDePasse" class="text-lg font-semibold mb-2">Mot de passe :</label>
             <input type="password" th:field="*{motDePasse}" id="motDePasse" class="border rounded-lg p-2">
             <div th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}" class="text-red-600"></div>
+            <p class="mt-1 text-gray-600 text-sm">Le mot de passe doit contenir au moins :</p>
+            <ul class="list-disc list-inside text-gray-600 text-sm">
+                <li>8 caractères</li>
+                <li>1 majuscule</li>
+                <li>1 chiffre</li>
+                <li>1 caractère spécial (ex : @, $, !, %)</li>
+            </ul>
         </div>
-           <div class="flex flex-col">
-        <label for="confirmMotDePasse" class="text-lg font-semibold mb-2">Confirmer le mot de passe :</label>
-        <input type="password" name="confirmMotDePasse" id="confirmMotDePasse" class="border rounded-lg p-2">
-    </div>
+        <div class="flex flex-col">
+            <label for="confirmMotDePasse" class="text-lg font-semibold mb-2">Confirmer le mot de passe :</label>
+            <input type="password" name="confirmMotDePasse" id="confirmMotDePasse" class="border rounded-lg p-2">
+        </div>
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Valider</button>
     </form>
 </div>

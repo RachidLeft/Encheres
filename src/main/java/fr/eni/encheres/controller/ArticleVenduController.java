@@ -48,14 +48,16 @@ public class ArticleVenduController {
 	    
 	    // Création d'une enchère vide pour le formulaire
 	    Enchere enchere = new Enchere();
-	    
+	    boolean isEnchere = false;
 	    // Pré-remplir le montant de l'enchère avec la meilleure proposition :
 	    // On suppose que articleVendu.getEnchere() retourne une liste triée (la plus haute en première position)
 	    if (articleVendu.getEnchere() != null && !articleVendu.getEnchere().isEmpty() 
 	            && articleVendu.getEnchere().get(0).getMontantEnchere() > 0) {
 	        enchere.setMontantEnchere(articleVendu.getEnchere().get(0).getMontantEnchere());
+	         isEnchere = true;
 	    } else {
 	        enchere.setMontantEnchere(articleVendu.getMiseAPrix());
+	        isEnchere = false;
 	    }
 	    
 	    // 📌 Formatage de la date de fin d'enchère
@@ -67,7 +69,6 @@ public class ArticleVenduController {
 	    
 	    // Comparer la date actuelle avec la date de fin de l'enchère
 	    boolean isEnchereEnCours = currentDate.isBefore(articleVendu.getDateFinEncheres());
-	    System.out.println("EN COURS                 :"+isEnchereEnCours);
 	    
 	    // Récupérer l'utilisateur connecté depuis la session
 	    Utilisateur encherisseur = (Utilisateur) session.getAttribute("utilisateurEnSession");
@@ -95,6 +96,7 @@ public class ArticleVenduController {
 	    model.addAttribute("dateFinFormatee", dateFinFormatee);
 	    model.addAttribute("isEnchereEnCours", isEnchereEnCours);
 	    model.addAttribute("isGagnant", isGagnant);
+	    model.addAttribute("isEnchere", isEnchere);
 
 
 	    return "detailArticleVendu";
@@ -134,7 +136,6 @@ public class ArticleVenduController {
 	
 	    // Récupérer l'utilisateur connecté en session
 	    Utilisateur encherisseur = (Utilisateur) session.getAttribute("utilisateurEnSession");
-	    System.out.println("NOUVEAU ENCHERISSEUR    " + encherisseur);
 
 	    // Vérifier si l'utilisateur a assez de crédits
 	    if (encherisseur.getCredit() < enchere.getMontantEnchere()) {
@@ -177,7 +178,6 @@ public class ArticleVenduController {
 	    // Mise à jour du crédit du nouvel enchérisseur
 	    int nouveauCredit = encherisseur.getCredit() - enchere.getMontantEnchere();
 	    encherisseur.setCredit(nouveauCredit);
-	    System.out.println("ENCHERISSEUR AVANT UPDATE " + encherisseur);
 	    utilisateurService.update(encherisseur);
 	    
 	    // Retourner à la page de détails après avoir ajouté l'enchère

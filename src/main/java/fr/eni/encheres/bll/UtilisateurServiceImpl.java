@@ -42,6 +42,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public void deleteById(int id) {
     	utilisateurRepository.deleteById(id);
     }
+
+
+	@Override
+	public void updateMdp(Utilisateur utilisateur) {
+		String passwordBcrypt = PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(utilisateur.getMotDePasse());
+    	utilisateur.setMotDePasse(passwordBcrypt);
+    	utilisateurRepository.updateMdp(utilisateur);
+	}
     
    
 

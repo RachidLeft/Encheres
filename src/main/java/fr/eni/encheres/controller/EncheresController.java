@@ -30,7 +30,7 @@ public class EncheresController {
 	}
 
 
-	@GetMapping("/encheres")	 
+	@GetMapping({"/encheres", "/"})	 
 	public String afficherEncheres(Model model) {
 		
 		List<Categorie> categories = categorieService.findAll();

@@ -17,5 +17,7 @@ public interface UtilisateurService {
 
     void deleteById(int id);
 
+	void updateMdp(Utilisateur utilisateur);
+
   
 }

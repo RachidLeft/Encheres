@@ -33,7 +33,7 @@ public class UtilisateurController {
 
     @PostMapping("/ajout")
     public String ajouterUtilisateur(@Valid @ModelAttribute Utilisateur utilisateur,  
-                                     BindingResult resultat, // 🔴 Doit être immédiatement après @Valid !
+                                     BindingResult resultat, 
                                      @RequestParam("confirmMotDePasse") String confirmMotDePasse) {
 
         // Vérification des erreurs de validation (champs obligatoires)
@@ -50,6 +50,45 @@ public class UtilisateurController {
         // Enregistrement de l'utilisateur
         utilisateurService.ajouter(utilisateur);  
         return "redirect:/";
+    }
+    @GetMapping("/modif-mdp/{id}")
+    public String modifMdp(@PathVariable("id") int id, Model model) {
+        model.addAttribute("utilisateur", utilisateurService.findById(id));
+        return "form-modif-mdp";
+    }
+
+    @PostMapping("/modif-mdp/{id}")
+    public String modifMdp(@PathVariable("id") int id, @ModelAttribute Utilisateur utilisateur,
+                           BindingResult resultat,
+                           @RequestParam("confirmMotDePasse") String confirmMotDePasse) {
+        
+
+        // Vérification de la confirmation du mot de passe
+        if (!utilisateur.getMotDePasse().equals(confirmMotDePasse)) {
+            resultat.rejectValue("motDePasse", "error.motDePasse", "Les mots de passe ne correspondent pas.");
+            return "form-modif-mdp"; 
+        }
+
+        // Vérification de la validité du mot de passe
+        String motDePasse = utilisateur.getMotDePasse();
+        if (!isMotDePasseValide(motDePasse)) {
+            resultat.rejectValue("motDePasse", "error.motDePasse", "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.");
+            return "form-modif-mdp"; 
+        }
+
+        utilisateur.setMotDePasse(confirmMotDePasse);
+        utilisateur.setNoUtilisateur(id);
+        utilisateurService.updateMdp(utilisateur);
+        return "redirect:/utilisateurs/detail/" + utilisateur.getNoUtilisateur();
+    }
+
+    // Méthode pour vérifier si le mot de passe est valide
+    private boolean isMotDePasseValide(String motDePasse) {
+        if (motDePasse.length() < 8) return false;
+        if (!motDePasse.matches(".*[A-Z].*")) return false; // Vérifie la présence d'une majuscule
+        if (!motDePasse.matches(".*[0-9].*")) return false; // Vérifie la présence d'un chiffre
+        if (!motDePasse.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) return false; // Vérifie la présence d'un caractère spécial
+        return true;
     }
 
 
@@ -79,4 +118,6 @@ public class UtilisateurController {
         utilisateurService.update(utilisateur);
         return "detailUtilisateur";
     }
+    
+    
 }

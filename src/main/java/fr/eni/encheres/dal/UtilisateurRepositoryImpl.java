@@ -62,7 +62,6 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
     public void update(Utilisateur utilisateur) {
         String sql = "UPDATE UTILISATEURS SET pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, code_postal = ?, ville = ?,credit = ?, administrateur = ? " +
                      "WHERE no_utilisateur = ?";
-System.out.println("je suis la");
         jdbcTemplate.update(sql,
             utilisateur.getPseudo(),
             utilisateur.getNom(),
@@ -77,7 +76,15 @@ System.out.println("je suis la");
             utilisateur.getNoUtilisateur()
         );
     }
-
+    @Override
+    public void updateMdp(Utilisateur utilisateur) {
+        String sql = "UPDATE UTILISATEURS SET   mot_de_passe = ? " +
+                     "WHERE no_utilisateur = ?";
+        jdbcTemplate.update(sql,
+        		utilisateur.getMotDePasse(),
+        		utilisateur.getNoUtilisateur()
+        );
+    }
     @Override
     public void deleteById(int id) {
         String sql = "DELETE FROM UTILISATEURS WHERE no_utilisateur = ?";

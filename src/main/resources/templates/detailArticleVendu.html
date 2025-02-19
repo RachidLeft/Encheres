@@ -36,13 +36,22 @@
             <p th:text="${errorMessage}"></p>
         </div>
         
-      <!-- Affichage du gagnant si l'enchère est terminée -->
-<div th:if="${isEnchereEnCours != null and !isEnchereEnCours}" class="mt-4 p-4 bg-green-100 text-green-700 rounded">
+<!-- Affichage si l'enchère est terminée mais qu'il n'y a eu aucune enchère -->
+<div th:if="${isEnchereEnCours != null and !isEnchereEnCours and isEnchere == false}" 
+     class="mt-4 p-4 bg-green-100 text-green-700 rounded">
+    <p>Aucune enchère...</p>
+</div>
+
+<!-- Affichage du gagnant seulement si une enchère a eu lieu et que l'enchère est terminée -->
+<div th:if="${isEnchereEnCours != null and !isEnchereEnCours and isEnchere == true}" 
+     class="mt-4 p-4 bg-green-100 text-green-700 rounded">
     <p th:if="${isGagnant}">🎉 Vous avez remporté l'enchère ! Félicitations !</p>
-    <p th:if="${not isGagnant}">
+    <p th:if="${not isGagnant}">  
         🏆 <span th:text="${articleVendu.enchere[0].encherisseur.pseudo}"></span> a remporté la vente !
     </p>
 </div>
+
+
 
 <!-- Formulaire d'enchère (uniquement si l'enchère est en cours) -->
 <div class="mt-6 p-6 border-t" th:if="${isEnchereEnCours}">
