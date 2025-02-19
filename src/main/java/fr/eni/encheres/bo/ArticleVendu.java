@@ -4,6 +4,7 @@ package fr.eni.encheres.bo;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -31,7 +32,8 @@ public class ArticleVendu {
     private Categorie categorie;
     private Utilisateur vend;
     private Utilisateur achete;
-   
+    
+    @Valid
     private Retrait lieuRetrait;
     private List<Enchere> enchere;
     
