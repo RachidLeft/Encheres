@@ -9,23 +9,19 @@ import fr.eni.encheres.exception.BusinessException;
 
 public interface ArticleVenduService {
 	
-	List<ArticleVendu> consulterLesArticles();
-	
-	
-	List<ArticleVendu> consulterLesArticlesNomEtCategorie(String nomArticle, int idCategorie);
-	
+	List<ArticleVendu> consulterLesArticles(String nomArticle, int idCategorie, int noUtilisateur);
+
 
 	void creerArticleAVendre(ArticleVendu articleVendu) throws BusinessException;
+
 
 	ArticleVendu findById(int id);
 
 
-
-
 	static void update(ArticleVendu articleVendu) {
-		// TODO Auto-generated method stub
 		
 	}
+		
 
+	List<ArticleVendu> flitrerLesArticles(int idCategorie, String nomArticle, int noUtilisateur, List<String> check);
 }
-

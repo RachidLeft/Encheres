@@ -24,22 +24,28 @@ import fr.eni.encheres.bo.Utilisateur;
 public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	
 	private final String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, no_utilisateur, no_categorie)"
-
 			+ " VALUES (:nom_article, :description, :date_debut_encheres, :date_fin_encheres, :prix_initial, :no_utilisateur, :no_categorie)";
-	private final String FIND_ALL = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
-			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie";
-	private final String FIND_ARTICLE_BY_CATEGORIE = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
-			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie WHERE av.no_categorie = :no_categorie";
-	private final String FIND_ARTICLE_BY_NAME = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
-			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie WHERE av.nom_article LIKE :nom_article";
-	private final String FIND_ARTICLE_BY_NAME_AND_CATEGORIE = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
-			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie WHERE av.nom_article LIKE :nom_article AND av.no_categorie = :no_categorie";
-
-	private final String FIND_ARTICLE_BY_DATE_START = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.no_utilisateur, av.no_categorie, u.pseudo FROM ARTICLES_VENDUS AS av"
-			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie WHERE av.date_debut_encheres = :date_debut_encheres";
+	
+	private final String FIND_ALL = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.prix_vente , av.no_utilisateur, av.no_categorie, u.pseudo, u.no_utilisateur AS u_no_utilisateur, e.no_utilisateur AS u2_no_utilisateur, e.montant_enchere FROM ARTICLES_VENDUS AS av"
+			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie LEFT JOIN ENCHERES e ON e.no_article = av.no_article WHERE 1=1 ";
+	
+	private final String FIND_ARTICLE_BY_CATEGORIE = "AND av.no_categorie = :no_categorie";
+	
+	private final String FIND_ARTICLE_BY_NAME = " AND av.nom_article LIKE :nom_article";
+	
+	private final String DATE_ENCHERE_EN_COURS = " AND av.date_debut_encheres < GETDATE() AND av.date_fin_encheres > GETDATE()";
+	
+	private final String DATE_FIN_ENCHERE = " AND av.date_fin_encheres < GETDATE()";	
+	
+	private final String ENCHERE_UTILISATEUR = " AND e.no_utilisateur = :no_utilisateur";
+	
+	private final String MES_VENTES = " AND u.no_utilisateur = :no_utilisateur";
+	
+	private final String DATE_ENCHERE_NON_DEBUTEE = " AND av.date_debut_encheres > GETDATE()";	
 	
 	
-
+	
+	
 	private final String FIND_ARTICLE_BY_ID = "SELECT "
 	        + "av.no_article AS av_no_article, "
 	        + "av.nom_article AS av_nom_article, "
@@ -102,36 +108,63 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		}
 	}
 	
-
+	
+	/*
+	 * Utilisation de la requete WHERE 1=1 
+	 * teste les conditions des requetes pour chaque filtre dans une seule methode
+	 * 
+	 */
+	
 	@Override
-	public List<ArticleVendu> findAll() {
+	public List<ArticleVendu> findAll(int noCategorie, String nomArticle, int noUtilisateur, List<String> check) {
+		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 		
-		return jdbcTemplate.query(FIND_ALL, new ArticleVenduRowMapper());
+		String requeteSql = FIND_ALL;
+		
+		
+		if (noCategorie != 0) {
+			requeteSql += FIND_ARTICLE_BY_CATEGORIE;
+			mapSqlParameterSource.addValue("no_categorie", noCategorie);
+		}
+		if (nomArticle != null && !nomArticle.isBlank() ) {
+			requeteSql += FIND_ARTICLE_BY_NAME;
+			mapSqlParameterSource.addValue("nom_article", "%" + nomArticle + "%");
+		}
+		for (String filtreChoix : check) {
+			if (filtreChoix.equals("achat1")) {
+				requeteSql += DATE_ENCHERE_EN_COURS;
+			}
+			
+			if (filtreChoix.equals("achat2")) {
+				requeteSql += DATE_ENCHERE_EN_COURS + ENCHERE_UTILISATEUR;
+				mapSqlParameterSource.addValue("no_utilisateur", noUtilisateur);
+			}
+			
+			if (filtreChoix.equals("achat3")) {
+				requeteSql += DATE_FIN_ENCHERE + ENCHERE_UTILISATEUR;	
+				mapSqlParameterSource.addValue("no_utilisateur", noUtilisateur);
+			}
+			
+			if (filtreChoix.equals("vente1")) {
+				requeteSql += DATE_ENCHERE_EN_COURS + MES_VENTES;
+				mapSqlParameterSource.addValue("no_utilisateur", noUtilisateur);
+			}
+			
+			if (filtreChoix.equals("vente2")) {
+				requeteSql += DATE_ENCHERE_NON_DEBUTEE + MES_VENTES;
+				mapSqlParameterSource.addValue("no_utilisateur", noUtilisateur);
+			}
+			
+			if (filtreChoix.equals("vente3")) {
+				requeteSql += DATE_FIN_ENCHERE + MES_VENTES;
+				mapSqlParameterSource.addValue("no_utilisateur", noUtilisateur);
+			}
+		}
+		
+		return jdbcTemplate.query(requeteSql, mapSqlParameterSource, new ArticleVenduRowMapper());
+
 	}
 
-	
-	@Override
-	public List<ArticleVendu> findArticleById(int noCategorie) {
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("no_categorie", noCategorie);
-		return jdbcTemplate.query(FIND_ARTICLE_BY_CATEGORIE, mapSqlParameterSource, new ArticleVenduRowMapper());
-	}
-
-	@Override
-	public List<ArticleVendu> findArticleByName(String nomArticle) {
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("nom_article", nomArticle);
-		return jdbcTemplate.query(FIND_ARTICLE_BY_NAME, mapSqlParameterSource, new ArticleVenduRowMapper());
-	}
-	
-	@Override
-
-	public List<ArticleVendu> findArticleByNameAndCategorie(int noCategorie, String nomArticle) {
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("no_categorie", noCategorie);
-		mapSqlParameterSource.addValue("nom_article", nomArticle);
-		return jdbcTemplate.query(FIND_ARTICLE_BY_NAME_AND_CATEGORIE, mapSqlParameterSource, new ArticleVenduRowMapper());
-	}
 
 
 	@Override
@@ -150,16 +183,8 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	}
 	
 	
-	@Override
-	public List<ArticleVendu> findByEnchereEnCour(LocalDateTime dateDebutEncheres) {
-		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("date_debut_encheres", dateDebutEncheres);
-		
-		return jdbcTemplate.query(FIND_ARTICLE_BY_DATE_START, mapSqlParameterSource, new ArticleVenduRowMapper());
-	}
-	
 
-class ArticleVenduRowMapper implements RowMapper<ArticleVendu>{
+	class ArticleVenduRowMapper implements RowMapper<ArticleVendu>{
 		
 		@Override
 		public ArticleVendu mapRow(ResultSet rs, int rowNum) throws SQLException{
@@ -170,11 +195,12 @@ class ArticleVenduRowMapper implements RowMapper<ArticleVendu>{
 			av.setDateDebutEncheres(rs.getObject("date_debut_encheres", LocalDateTime.class));
 			av.setDateFinEncheres(rs.getObject("date_fin_encheres", LocalDateTime.class));
 			av.setMiseAPrix(rs.getInt("prix_initial"));
-			
+			av.setPrixVente(rs.getInt("prix_vente"));
+						
 			
 			
 			Utilisateur vend = new Utilisateur();
-			vend.setNoUtilisateur(rs.getInt("no_utilisateur"));
+			vend.setNoUtilisateur(rs.getInt("u_no_utilisateur"));
 			vend.setPseudo(rs.getString("pseudo"));
 			av.setVend(vend);
 			
@@ -182,6 +208,17 @@ class ArticleVenduRowMapper implements RowMapper<ArticleVendu>{
 			cat.setNoCategorie(rs.getInt("no_categorie"));
 			av.setCategorie(cat);
 			
+			 // Mapper l'enchère
+		    Enchere enchere = new Enchere();
+		    enchere.setMontantEnchere(rs.getInt("montant_enchere"));
+			
+			// Mapper l'encherisseur
+		    Utilisateur encherisseur = new Utilisateur();
+		    encherisseur.setNoUtilisateur(rs.getInt("u2_no_utilisateur"));
+		    enchere.setEncherisseur(encherisseur);
+			
+		    av.setEnchere(Arrays.asList(enchere));
+		    
 			return av;
 		}
 	}
@@ -238,12 +275,5 @@ class ArticleVenduRowMapper implements RowMapper<ArticleVendu>{
 		}
 	}
 
-
-
-
-
-
-
-	
 	
 }
