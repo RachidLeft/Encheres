@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.dal.ArticleVenduDAO;
 import fr.eni.encheres.dal.CategorieDAO;
+import fr.eni.encheres.dal.EnchereDAO;
 
 @Service
 public class ArticleVenduServiceImpl implements ArticleVenduService {
@@ -19,46 +20,39 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	
 	ArticleVenduDAO articleVenduDAO;
 	CategorieDAO categorieDAO;
+	EnchereDAO enchereDAO;
 	
-	public ArticleVenduServiceImpl(ArticleVenduDAO articleVenduDAO, CategorieDAO categorieDAO) {
+	public ArticleVenduServiceImpl(ArticleVenduDAO articleVenduDAO, CategorieDAO categorieDAO, EnchereDAO enchereDAO) {
 		this.articleVenduDAO = articleVenduDAO;
 		this.categorieDAO = categorieDAO;
+		this.enchereDAO = enchereDAO;
 	}
 	
 
 	@Override
-	public List<ArticleVendu> consulterLesArticles() {
-
-		return this.articleVenduDAO.findAll();
+	public List<ArticleVendu> consulterLesArticles(String nomArticle, int idCategorie, int noUtilisateur) {
+		
+		List<String> listeAchat = new ArrayList<String>();
+		
+		listeAchat.add("achat1");
+		
+		
+		return this.articleVenduDAO.findAll(idCategorie, nomArticle, noUtilisateur, listeAchat);
 	}
 
 
 
 	@Override
-	public List<ArticleVendu> consulterLesArticlesNomEtCategorie(String nomArticle, int idCategorie) {
-		List<ArticleVendu> articleVendu = new ArrayList<ArticleVendu>();
-
+	public List<ArticleVendu> flitrerLesArticles(int idCategorie, String nomArticle, int noUtilisateur, List<String> check) {
 				
+		return this.articleVenduDAO.findAll(idCategorie, nomArticle, noUtilisateur, check);
 		
-		
-		
-			if ((nomArticle.isBlank()) && (idCategorie != 0)) {
-				articleVendu = this.articleVenduDAO.findArticleById(idCategorie);
-			}
-			if ((!nomArticle.isBlank()) && (idCategorie == 0)) {
-				articleVendu = this.articleVenduDAO.findArticleByName("%" + nomArticle + "%");
-			}
-			if ((!nomArticle.isBlank()) && (idCategorie != 0)) {
-				articleVendu = this.articleVenduDAO.findArticleByNameAndCategorie(idCategorie, "%" + nomArticle + "%");
-			}
-			if ((nomArticle.isBlank()) && (idCategorie == 0)) {
-				articleVendu = this.articleVenduDAO.findAll();
-			}
-				
-		
-		return articleVendu;
-
 	}
+	
+
+	
+	
+	
 
 	
 	public ArticleVendu findById(int id) {
@@ -70,6 +64,8 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
 	public void creerArticleAVendre(ArticleVendu articleVendu){
 			articleVenduDAO.creerArticle(articleVendu);
 	}
-	
+
+
+
 
 }

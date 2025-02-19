@@ -60,7 +60,7 @@
             <h2 class="text-lg font-semibold text-blue-600">
                 <a th:href="@{'/articleVendu/detail/' + ${av.noArticle}}" th:text="${av.nomArticle}" class="hover:underline"></a>
             </h2>
-            <p class="text-gray-700 mt-2"><span class="font-semibold">Prix :</span> <span th:text="${av.miseAPrix}" th:if="${av.prixVente} == 0"></span><span th:text="${av.prixVente}" th:if="${av.prixVente} != 0"></span> points</p>
+            <p class="text-gray-700 mt-2"><span class="font-semibold">Prix :</span> <span th:text="${av.miseAPrix}"></span> points</p>
             <p class="text-gray-700"><span class="font-semibold">Fin :</span> <span th:text="${av.dateFinEncheres}"></span></p>
             <p class="text-gray-700">
                 <span class="font-semibold">Vendeur :</span>
@@ -77,8 +77,6 @@
         </div>
     </div>
 </main>
-
-<script src="../static/js/script-filtre.js"></script>
 
 </body>
 </html>

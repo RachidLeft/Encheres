@@ -26,7 +26,7 @@ public class ArticleVendu {
 	private int miseAPrix;
 	@Min(value = 1)
     private int prixVente;
-    private String etatVente;
+    private int etatVente;
     
     @NotNull
     private Categorie categorie;
@@ -41,7 +41,7 @@ public class ArticleVendu {
 	}
     
 	public ArticleVendu(int noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres,
-			LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, String etatVente, Categorie categorie,
+			LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, int etatVente, Categorie categorie,
 			Utilisateur vend, Utilisateur achete, Retrait lieuRetrait, List<Enchere> enchere) {
 		super();
 		this.noArticle = noArticle;
@@ -132,12 +132,12 @@ public class ArticleVendu {
 	}
 
 
-	public String getEtatVente() {
+	public int getEtatVente() {
 		return etatVente;
 	}
 
 
-	public void setEtatVente(String etatVente) {
+	public void setEtatVente(int etatVente) {
 		this.etatVente = etatVente;
 	}
 

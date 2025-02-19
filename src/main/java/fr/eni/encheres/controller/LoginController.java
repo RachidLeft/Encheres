@@ -23,7 +23,7 @@ public class LoginController {
         this.contexteService = contexteService;
     }
 	
-	@GetMapping({"/login", "/"})
+	@GetMapping("/login")
 	public String login() {
 		return "login";
 	}
