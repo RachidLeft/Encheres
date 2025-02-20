@@ -16,6 +16,6 @@ public interface ArticleVenduDAO {
 	List<ArticleVendu> findAll(int noCategorie, String nomArticle, int no_utilisateur, List<String> check);
 	
 
-	
+	public void updatePrixDeVente(ArticleVendu articleVendu);
 
 }

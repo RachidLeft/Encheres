@@ -160,10 +160,7 @@ public class ArticleVenduController {
 	    // Sauvegarder l'enchère en base de données
 	    enchereService.ajouter(enchere);
 	    
-	    // Mise à jour du prix de vente de l'article
-	    articleVendu.setPrixVente(enchere.getMontantEnchere());
-	    ArticleVenduService.update(articleVendu);
-	    
+	        
 	    // Mise à jour du crédit de l'ancien enchérisseur (si applicable)
 	    if ( encherePlusHaute.getMontantEnchere() != 0) {
 	        Utilisateur ancien = utilisateurService.findById(ancienEncherisseur.getNoUtilisateur());
