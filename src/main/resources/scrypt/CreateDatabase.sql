@@ -113,11 +113,6 @@ ALTER TABLE ARTICLES_VENDUS
 ON DELETE NO ACTION 
     ON UPDATE no action
  
-ALTER TABLE ARTICLES_VENDUS
-    ADD CONSTRAINT ventes_utilisateur_fk FOREIGN KEY ( no_utilisateur )
-        REFERENCES utilisateurs ( no_utilisateur )
-ON DELETE NO ACTION 
-    ON UPDATE no action
     
   ALTER TABLE ARTICLES_VENDUS    ADD CONSTRAINT chk_dates_encheres CHECK (date_debut_encheres < date_fin_encheres);
   
