@@ -11,7 +11,13 @@ import fr.eni.encheres.bll.contexte.ContexteService;
 import fr.eni.encheres.bo.Utilisateur;
 
 
-
+/**
+ * Contrôleur gérant les opérations de connexion et de gestion de session utilisateur.
+ *
+ * <p>Ce contrôleur permet aux utilisateurs de se connecter et de maintenir leur session
+ * active. Il utilise un service de contexte pour charger les informations de l'utilisateur
+ * et les stocker dans un attribut de session.</p>
+ */
 @Controller
 @SessionAttributes ({"utilisateurEnSession"})
 public class LoginController {
@@ -22,17 +28,28 @@ public class LoginController {
     public LoginController(ContexteService contexteService) {
         this.contexteService = contexteService;
     }
-	
+    
+    /**
+     * Affiche la page de connexion.
+     *
+     * @return le nom de la vue "login".
+     */
 	@GetMapping("/login")
 	public String login() {
 		return "login";
 	}
 	
+	 /**
+     * Gère la connexion de l'utilisateur et met à jour les informations de session.
+     *
+     * @param utilisateurSession l'objet utilisateur en session à mettre à jour.
+     * @param principal l'objet contenant les informations d'authentification de l'utilisateur.
+     * @return une redirection vers la page des enchères.
+     */
 	@GetMapping("/session")
 	public String connexion(@ModelAttribute("utilisateurEnSession") Utilisateur utilisateurSession, Principal principal) {
 
 		Utilisateur utilisateur = this.contexteService.charger(principal.getName());
-System.out.println("aaaaaaaaaaaaaaaaaaa"+utilisateur);
 		if (utilisateur != null) {
 			utilisateurSession.setNoUtilisateur(utilisateur.getNoUtilisateur());
 			utilisateurSession.setPseudo(utilisateur.getPseudo());
@@ -59,12 +76,14 @@ System.out.println("aaaaaaaaaaaaaaaaaaa"+utilisateur);
 			utilisateurSession.setAdministrateur(false);
 			
 		}
-		System.out.println("tessssssssssssss"+utilisateurSession);
 		return "redirect:/encheres";
 
 	}
 	
-	
+	/**
+     * Crée un nouvel objet utilisateur pour la session.
+     * @return un nouvel objet {@code Utilisateur}.
+     */
 	@ModelAttribute("utilisateurEnSession")
 	 public Utilisateur addMembreEnSession() {
 	  return new Utilisateur();

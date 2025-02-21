@@ -19,9 +19,8 @@ public interface ArticleVenduService {
 	ArticleVendu findById(int id);
 
 
-	static void update(ArticleVendu articleVendu) {
-		
-	}
+	void updatePrixDeVente(ArticleVendu articleVendu);
+	
 		
 
 	List<ArticleVendu> flitrerLesArticles(int idCategorie, String nomArticle, int noUtilisateur, List<String> check);

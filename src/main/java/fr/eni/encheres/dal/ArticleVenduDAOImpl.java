@@ -28,6 +28,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	
 	private final String FIND_ALL = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.prix_vente , av.no_utilisateur, av.no_categorie, u.pseudo, u.no_utilisateur AS u_no_utilisateur, e.no_utilisateur AS u2_no_utilisateur, e.montant_enchere FROM ARTICLES_VENDUS AS av"
 			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie LEFT JOIN ENCHERES e ON e.no_article = av.no_article AND e.montant_enchere = (SELECT MAX(e2.montant_enchere) FROM ENCHERES e2 WHERE e2.no_article = av.no_article) WHERE 1=1 ";
+
 	
 	private final String FIND_ARTICLE_BY_CATEGORIE = "AND av.no_categorie = :no_categorie";
 	
@@ -43,7 +44,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	
 	private final String DATE_ENCHERE_NON_DEBUTEE = " AND av.date_debut_encheres > GETDATE()";	
 	
-	
+	private final String UPDATE_PRIX_DE_VENTE = "UPDATE ARTICLES_VENDUS SET prix_vente = :prixVente WHERE no_article = :noArticle";
 	
 	
 	private final String FIND_ARTICLE_BY_ID = "SELECT "
@@ -164,8 +165,17 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 		return jdbcTemplate.query(requeteSql, mapSqlParameterSource, new ArticleVenduRowMapper());
 
 	}
-
-
+	
+	
+	@Override
+	public void updatePrixDeVente(ArticleVendu articleVendu) {
+		MapSqlParameterSource map = new MapSqlParameterSource();
+		map.addValue("prixVente", articleVendu.getPrixVente());
+		map.addValue("noArticle", articleVendu.getNoArticle());
+		
+		jdbcTemplate.update(UPDATE_PRIX_DE_VENTE, map);
+		
+	}
 
 	@Override
 	public ArticleVendu findById(int noArticle) {
@@ -269,6 +279,9 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 			return av;
 		}
 	}
+
+
+
 
 	
 }

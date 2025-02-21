@@ -28,15 +28,35 @@ public class SecurityConfig {
     			.requestMatchers("/js/*").permitAll()
     			.requestMatchers("/logout").permitAll();
     			
+    			auth.requestMatchers("/","/encheres").permitAll();
+    			auth.requestMatchers(HttpMethod.POST,"/encheres/filtre").hasAnyRole("USER", "ADMIN");
+    			
     			// Accès à la page vendre un article
     			auth.requestMatchers(HttpMethod.GET,"/encheres/nouvellevente").hasAnyRole("USER", "ADMIN")
 				.requestMatchers(HttpMethod.POST,"/encheres/nouvellevente").hasAnyRole("USER", "ADMIN");
     			
+    			auth.requestMatchers(HttpMethod.GET,"/articleVendu/detail/{id}").hasAnyRole("USER", "ADMIN")
+				.requestMatchers(HttpMethod.POST,"/articleVendu/detail/{id}").hasAnyRole("USER", "ADMIN");
+    			
+    			//Accès créer mon profil, modification mdp, suppression, modification 
+    			auth.requestMatchers(HttpMethod.GET,"/utilisateurs/ajout").permitAll()
+				.requestMatchers(HttpMethod.POST,"/utilisateurs/ajout").permitAll();
+    			
+    			auth.requestMatchers(HttpMethod.GET,"/utilisateurs/modif-mdp/{id}").hasAnyRole("USER", "ADMIN")
+				.requestMatchers(HttpMethod.POST,"/utilisateurs/modif-mdp/{id}").hasAnyRole("USER", "ADMIN");
+    			
+    			auth.requestMatchers(HttpMethod.GET,"/utilisateurs/detail/{id}").hasAnyRole("USER", "ADMIN")
+				.requestMatchers(HttpMethod.POST,"/utilisateurs/detail/{id}").hasAnyRole("USER", "ADMIN");
+
+    			auth.requestMatchers(HttpMethod.GET,"/utilisateurs/modif/{id}").hasAnyRole("USER", "ADMIN")
+				.requestMatchers(HttpMethod.POST,"/utilisateurs/modif/{id}").hasAnyRole("USER", "ADMIN");
+    			
+    			
     			auth.anyRequest().permitAll();
     		});
     		http.formLogin(form -> {
-    			form.usernameParameter("pseudo")
-    			.passwordParameter("mot_de_passe");
+    			form.usernameParameter("username")
+    			.passwordParameter("password");
     			form.loginPage("/login").permitAll()
     			.failureUrl("/login?error=true")
     			.defaultSuccessUrl("/session").permitAll();			
