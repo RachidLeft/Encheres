@@ -27,7 +27,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 			+ " VALUES (:nom_article, :description, :date_debut_encheres, :date_fin_encheres, :prix_initial, :no_utilisateur, :no_categorie)";
 	
 	private final String FIND_ALL = "SELECT av.no_article, av.nom_article, av.description, av.date_debut_encheres, av.date_fin_encheres, av.prix_initial, av.prix_vente , av.no_utilisateur, av.no_categorie, u.pseudo, u.no_utilisateur AS u_no_utilisateur, e.no_utilisateur AS u2_no_utilisateur, e.montant_enchere FROM ARTICLES_VENDUS AS av"
-			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie LEFT JOIN ENCHERES e ON e.no_article = av.no_article WHERE 1=1 ";
+			+ " JOIN UTILISATEURS AS u ON av.no_utilisateur = u.no_utilisateur JOIN CATEGORIES AS c ON av.no_categorie = c.no_categorie LEFT JOIN ENCHERES e ON e.no_article = av.no_article AND e.montant_enchere = (SELECT MAX(e2.montant_enchere) FROM ENCHERES e2 WHERE e2.no_article = av.no_article) WHERE 1=1 ";
 	
 	private final String FIND_ARTICLE_BY_CATEGORIE = "AND av.no_categorie = :no_categorie";
 	
@@ -172,12 +172,7 @@ public class ArticleVenduDAOImpl implements ArticleVenduDAO {
 	    MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 	    mapSqlParameterSource.addValue("no_article", noArticle);
 
-
-
 	    ArticleVendu article = jdbcTemplate.queryForObject(FIND_ARTICLE_BY_ID, mapSqlParameterSource, new ArticleVenduDetailRowMapper());
-
-
-	    System.out.println("Article récupéré : " + article);
 
 	    return article;
 	}

@@ -3,9 +3,9 @@
  */
 
 // Sélection des éléments radio et checkbox
-const choix1 = document.getElementById('achats');
+const choix1 = document.getElementById("achats");
 const select1 = document.querySelectorAll("#achat1, #achat2, #achat3");
-const choix2 = document.getElementById('ventes');
+const choix2 = document.getElementById("ventes");
 const select2 = document.querySelectorAll("#vente1, #vente2, #vente3");
 
 

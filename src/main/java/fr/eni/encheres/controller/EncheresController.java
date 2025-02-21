@@ -28,6 +28,15 @@ public class EncheresController {
 		this.articleVenduService = articleVenduService;
 	}
 
+	
+	/*
+	 * Cette méthode est prise en compte si aucun Utilisateur est connecté 
+	 * Permet d'envoyer sur la page d'acceuil
+	 * par défaut la liste des enchères en cours
+	 * On peut filtrer par mot clé et/ou par catégorie
+	 * avec le nomArticle, le prix en cours,
+	 * la date de fin d'enchère et le nom du vendeur
+	 */
 	@GetMapping({"/encheres", "/"})
 	public String afficherEncheres(@RequestParam(name="motCle", required = false) String nomArticle, @RequestParam(name="categorie", required = false) String idCategorie, 
 			@ModelAttribute("utilisateurEnSession") Utilisateur utilisateur, Model model) {
@@ -49,10 +58,22 @@ public class EncheresController {
 
 		List<ArticleVendu> listeArticleVendu = this.articleVenduService.consulterLesArticles(nomArticle, idCategorieInt, noUtilisateur);
 		model.addAttribute("article_vendu", listeArticleVendu);
+		
+		System.out.println("article" + listeArticleVendu);
 
 		return "index";
 	}
 
+	/*
+	 * Cette méthode est prise en compte si un Utilisateur est connecté 
+	 * Permet d'envoyer sur la page d'acceuil
+	 * par défaut la liste des enchères en cours
+	 * On peut filtrer par mot clé et/ou par catégorie
+	 * et/ou avec les checkbox Achat ou Vente
+	 * avec le nomArticle, le prix en cours,
+	 * la date de fin d'enchère et le nom du vendeur
+	 */
+	
 	@PostMapping("/encheres/filtre")
 	public String filtreEncheresCategorie(@RequestParam("categorie") String idCategorie,
 			@RequestParam("motCle") String nomArticle, @ModelAttribute("utilisateurEnSession") Utilisateur utilisateur,
